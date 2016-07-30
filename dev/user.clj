@@ -1,6 +1,10 @@
 (ns user
-  (:require [figwheel-sidecar.repl-api :as f]
+  (:require [alembic.still :as a]
+            [figwheel-sidecar.repl-api :as f]
             [micropress.core :refer :all]))
+
+(defn reload-dep []
+  (a/load-project))
 
 (defn fig-start
   "This starts the figwheel server and watch based auto-compiler."

@@ -1,32 +1,16 @@
 (ns micropress.core
-  (:require [compojure.core :refer [defroutes context GET]]
+  (:require [compojure.core :refer [defroutes routes context GET]]
             [compojure.route :as route]
+            [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
-            [ring.util.response :as res]))
+            [micropress.handler.entry :as entry]
+            [micropress.handler.home :as home]))
 
 (defonce server (atom nil))
 
-(defn ok [body]
-  {:status 200
-   :body body})
-
-(defn html [res]
-  (res/content-type res "text/html; charset=utf-8"))
-
-(defn home-view [req]
-  "<h1> home </h1>")
-
-(defn entry [{:keys [params] :as req}]
-  (str "<h1> entry " (:id params) "</h1>"))
-
-(defn home [req]
-  (-> (home-view req)
-      res/response
-      html))
-
 (defroutes handler
-  (GET "/" req home)
-  (GET "/entry/:id" req entry)
+  (routes home/routes)
+  (routes entry/routes)
   (route/not-found "<h1>404 Not found</h1>"))
 
 (defn start []
