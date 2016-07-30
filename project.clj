@@ -1,5 +1,5 @@
 (defproject micropress "0.1.0-SNAPSHOT"
-  :description "contents management system with microservice architecture"
+  :description "Api server for contents management system with microservice architecture"
   :url "http://example.com/FIXME"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
@@ -7,16 +7,18 @@
   :min-lein-version "2.6.1"
 
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.clojure/clojurescript "1.9.89"]
+                 [org.clojure/clojurescript "1.9.89"] ;;deleting
                  [org.clojure/core.async "0.2.385"
-                  :exclusions [org.clojure/tools.reader]]
-                 [cljsjs/react "15.2.1-1"]
-                 [cljsjs/react-dom "15.2.1-1"]
-                 [sablono "0.7.3"]
-                 [org.omcljs/om "1.0.0-alpha40"]
+                  :exclusions [org.clojure/tools.reader]] ;;deleting
+                 [cljsjs/react "15.2.1-1"] ;;deleting
+                 [cljsjs/react-dom "15.2.1-1"] ;;deleting
+                 [sablono "0.7.3"] ;;deleting
+                 [org.omcljs/om "1.0.0-alpha40"] ;;deleting
                  [ring "1.5.0"]
                  [compojure "1.5.1"]
-                 [hiccup "1.0.5"]]
+                 [hiccup "1.0.5"] ;;deleting
+                 [mysql/mysql-connector-java "6.0.3"]
+                 [org.clojure/java.jdbc "0.6.2-alpha2"]]
 
   :plugins [[lein-figwheel "0.5.4-7"]
             [lein-cljsbuild "1.1.3" :exclusions [[org.clojure/clojure]]]]
