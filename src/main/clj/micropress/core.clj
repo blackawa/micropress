@@ -1,7 +1,8 @@
 (ns micropress.core
   (:require [compojure.core :refer [defroutes context GET]]
             [compojure.route :as route]
-            [ring.adapter.jetty :as server]))
+            [ring.adapter.jetty :as server]
+            [ring.util.response :as res]))
 
 (defonce server (atom nil))
 
@@ -10,13 +11,13 @@
    :body body})
 
 (defn html [res]
-  (assoc res :headaers {"Content-type" "text/html; charset=utf-8"}))
+  (res/content-type res "text/html; charset=utf-8"))
 
 (defn home-view [req]
   "<h1> home </h1>")
 
-(defn entry [req]
-  "<h1> entry </h1>")
+(defn entry [{:keys [params] :as req}]
+  (str "<h1> entry " (:id params) "</h1>"))
 
 (defn home [req]
   (-> (home-view req)
