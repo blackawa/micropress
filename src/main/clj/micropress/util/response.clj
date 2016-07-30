@@ -6,3 +6,6 @@
 
 (defn html [res]
   (res/content-type res "text/html; charset=utf-8"))
+
+(defn edn [res]
+  (res/content-type res "application/edn; charset=utf-8"))

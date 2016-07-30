@@ -13,5 +13,5 @@
       res/html))
 
 (defroutes routes
-  (context "/entry"
+  (context "/entry" _
            (GET "/:id" _ entry-view)))
