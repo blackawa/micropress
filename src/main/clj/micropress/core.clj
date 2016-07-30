@@ -3,13 +3,11 @@
             [compojure.route :as route]
             [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
-            [micropress.handler.entry :as entry]
-            [micropress.handler.home :as home]))
+            [micropress.handler.entry :as entry]))
 
 (defonce server (atom nil))
 
 (defroutes handler
-  (routes home/routes)
   (routes entry/routes)
   (route/not-found "<h1>404 Not found</h1>"))
 
