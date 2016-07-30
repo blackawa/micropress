@@ -21,7 +21,7 @@
 
 (defn home [req]
   (-> (home-view req)
-      ok
+      res/response
       html))
 
 (defroutes handler
