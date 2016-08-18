@@ -3,16 +3,30 @@
 > This is a document to define functionalities of micropress.
 > Each sentences have to be written in 'have to' or 'can' statements.
 
+## For System Administrators
+
+### They can
+
+- invite any other users
+- expel any other users
+- change privileges of any other users
+- publish article
+- withdraw articles
+
+## For editor in chief
+
+### They can
+
+
+
 ## For Editors
 
 ### They have to
 
-- be authenticated in stages(normal, admin, etc)
 - set at least one tag for each articles
 
 ### They can
 
-- access in secure
 - save articles
 - delete articles
 - edit articles
@@ -23,15 +37,8 @@
 - use pictures
 - write raw HTML
 - set other editor's name as writer of an article if they have admin privilege
-- invite editors
-- expel editors
-- use future date as published date
 
 ## For SEO Managers
-
-### They have to
-
-- be authenticated in stages
 
 ### They can
 
