@@ -9,7 +9,8 @@
 
 - invite any other users
 - expel any other users
-- change privileges of any other users
+- change status of any other users
+- change their own account information(pic, mail address, password, etc)
 - publish article
 - withdraw articles
 
@@ -17,7 +18,12 @@
 
 ### They can
 
-
+- publish articles
+- withdraw articles
+- view all drafts and articles
+- set future date as published date
+- review drafts
+- change their own account information
 
 ## For Editors
 
@@ -27,9 +33,6 @@
 
 ### They can
 
-- save articles
-- delete articles
-- edit articles
 - save drafts
 - edit drafts
 - delete drafts
@@ -37,16 +40,21 @@
 - use pictures
 - write raw HTML
 - set other editor's name as writer of an article if they have admin privilege
+- change their own account information(pic, mail address, password, etc)
+- view only their own drafts and articles
+- ask review to an editor in chief
 
 ## For SEO Managers
 
 ### They can
 
-- Change visual theme without rebooting micropress
-- Check micropress status
-- Receive E-mail when micropress is too busy or down
-- Check Google Analytics status
-- Configure Google Analytics
+- change visual theme without rebooting micropress
+- check micropress status
+- receive E-mail when micropress is too busy or down
+- check Google Analytics status
+- configure Google Analytics
+- change their own account information(pic, mail address, password, etc)
+- configure twitter and facebook account
 
 ## For Visitors
 
