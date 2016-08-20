@@ -71,3 +71,5 @@ An user changes another user's email address, so micropress sends confirmation m
 1. If
 
 ### Alternative courses
+
+An user sends wrong information. Micropress returns 400 status and profile page.

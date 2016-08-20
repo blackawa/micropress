@@ -11,8 +11,6 @@
 - expel any other users
 - change status of any other users
 - change their own account information(pic, mail address, password, etc)
-- publish article
-- withdraw articles
 
 ## For editor in chief
 
