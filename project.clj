@@ -18,6 +18,7 @@
 
   :clean-targets ^{:protect false} ["target"]
 
-  :profiles {:dev {:dependencies [[alembic "0.3.2"]]
+  :profiles {:dev {:dependencies [[alembic "0.3.2"]
+                                  [ragtime "0.6.0"]]
                    :source-paths ["src" "src/main/clj" "dev"]
                    :repl-options {:init (set! *print-length* 50)}}})
