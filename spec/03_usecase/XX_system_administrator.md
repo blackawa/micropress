@@ -73,3 +73,22 @@ An user changes another user's email address, so micropress sends confirmation m
 ### Alternative courses
 
 An user sends wrong information. Micropress returns 400 status and profile page.
+
+## configure cooperation with other monitoring tools
+
+### Basic course
+
+1. An user accesses cooperation page. Micropress displays it.
+1. An user checks api key, and configure other monitoring tool to check the API to check status. Micropress returns its status(memory, cpu, jdk status, etc) throgh the API.
+
+### Alternative courses
+
+## configure publishement webhook
+
+### Basic course
+
+1. An user accesses cooperation page. Micropress displays it.
+1. An user selects webhook page. Micropress displays it.
+1. An user configure the webhook to post to facebook when an article is published. Micropress checks webhook when it publishes articles, and kick it.
+
+### Alternative courses

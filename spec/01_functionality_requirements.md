@@ -11,6 +11,8 @@
 - expel any other users
 - change status of any other users
 - change their own account information(pic, mail address, password, etc)
+- configure cooperation with other monitoring tools
+- configure publishment webhook
 
 ## For editor in chief
 
@@ -18,9 +20,10 @@
 
 - publish articles
 - withdraw articles
-- view all drafts and articles
-- set future date as published date
-- review drafts
+- view all drafts
+- view all articles
+- search drafts and articles
+- reserve publishment
 - change their own account information
 
 ## For Editors
@@ -32,27 +35,14 @@
 ### They can
 
 - save drafts
+- submit drafts
 - edit drafts
 - delete drafts
 - write in Markdown syntax
 - use pictures
 - write raw HTML
-- set other editor's name as writer of an article if they have admin privilege
 - change their own account information(pic, mail address, password, etc)
 - view only their own drafts and articles
-- ask review to an editor in chief
-
-## For SEO Managers
-
-### They can
-
-- change visual theme without rebooting micropress
-- check micropress status
-- receive E-mail when micropress is too busy or down
-- check Google Analytics status
-- configure Google Analytics
-- change their own account information(pic, mail address, password, etc)
-- configure twitter and facebook account
 
 ## For Visitors
 
