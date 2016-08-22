@@ -1,0 +1,12 @@
+drop table user_privileges;
+drop table user_statuses;
+drop table users;
+drop table user_sessions;
+drop table invitations;
+drop table user_histories;
+drop table events;
+drop table webhooks;
+drop table article_statuses;
+drop table body_types;
+drop table articles;
+drop table article_status_histories;
