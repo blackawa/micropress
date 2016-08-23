@@ -23,7 +23,7 @@ foreign key (user_status_id) references user_statuses(id)
 
 create table user_sessions (
 session_uuid varchar(26) not null primary key,
-user_id varchar(128) not null,
+user_id int not null,
 expire_time timestamp not null,
 foreign key (user_id) references users(id)
 );
