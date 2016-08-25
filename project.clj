@@ -10,7 +10,8 @@
                  [ring "1.5.0"]
                  [compojure "1.5.1"]
                  [mysql/mysql-connector-java "6.0.3"]
-                 [org.clojure/java.jdbc "0.6.2-alpha2"]]
+                 [org.clojure/java.jdbc "0.6.2-alpha2"]
+                 [buddy "1.0.0"]]
 
   :source-paths ["src" "src/main/clj"]
   :test-paths ["test" "src/test/clj"]
