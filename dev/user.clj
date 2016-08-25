@@ -7,5 +7,5 @@
 (defn reload-deps []
   (a/load-project))
 
-(def config {:datastore (jdbc/sql-database {:connection-uri "jdbc:mysql://localhost:3306/micropress?user=micropress&password=p@ssw0rd"})
+(def config {:datastore (jdbc/sql-database {:connection-uri "jdbc:mysql://localhost:3306/micropress?user=micropress&password=p@ssw0rd&autoReconnect=true&useSSL=false"})
              :migrations (jdbc/load-resources "migrations")})
