@@ -30,6 +30,7 @@ foreign key (authority_id) references authorities(id)
 create table user_sessions (
 session_uuid varchar(26) not null primary key,
 user_id int not null,
+content blob,
 expire_time timestamp not null,
 foreign key (user_id) references users(id)
 );
