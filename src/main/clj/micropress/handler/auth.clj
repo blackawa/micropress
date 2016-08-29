@@ -5,7 +5,7 @@
             [micropress.service.auth :as auth]
             [clojure.edn :as edn]))
 
-(defn authenticate
+(defn create-auth-token
   [req]
   (println req)
   (let [params (edn/read-string (:body req))
@@ -18,5 +18,5 @@
       res/edn)))
 
 (defroutes routes
-  (context "/authenticate" _
-           (POST "/" _ authenticate)))
+  (context "/create-auth-token" _
+           (POST "/" _ create-auth-token)))
