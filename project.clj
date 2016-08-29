@@ -9,6 +9,7 @@
   :dependencies [[org.clojure/clojure "1.8.0"]
                  ;; web application
                  [ring "1.5.0"]
+                 [fogus/ring-edn "0.3.0"]
                  [compojure "1.5.1"]
                  ;; databse connection
                  [org.clojure/java.jdbc "0.6.1"]

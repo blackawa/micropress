@@ -3,7 +3,7 @@
             [compojure.route :as route]
             [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
-            [ring.middleware.params :refer [wrap-params]]
+            [ring.middleware.edn :refer [wrap-edn-params]]
             [micropress.handler.auth :as auth]))
 
 (defonce server (atom nil))
@@ -12,7 +12,7 @@
   (-> (routes
        (routes auth/routes)
        (route/not-found "<h1>404 Not found</h1>"))
-      wrap-params))
+      wrap-edn-params))
 
 (defn run []
   (when-not @server

@@ -7,11 +7,9 @@
 
 (defn create-auth-token
   [req]
-  (println req)
-  (let [params (edn/read-string (:body req))
+  (let [params (:params req)
         email (:email params)
         pwd (:pwd params)]
-    (println params)
     (-> (auth/authenticate email pwd)
       pr-str
       res/response
