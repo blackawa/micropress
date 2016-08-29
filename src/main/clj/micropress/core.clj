@@ -3,17 +3,20 @@
             [compojure.route :as route]
             [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
-            [micropress.handler.entry :as entry]))
+            [ring.middleware.params :refer [wrap-params]]
+            [micropress.handler.auth :as auth]))
 
 (defonce server (atom nil))
 
-(defroutes handler
-  (routes entry/routes)
-  (route/not-found "<h1>404 Not found</h1>"))
+(defroutes app
+  (-> (routes
+       (routes auth/routes)
+       (route/not-found "<h1>404 Not found</h1>"))
+      wrap-params))
 
-(defn start []
+(defn run []
   (when-not @server
-    (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
+    (reset! server (server/run-jetty #'app {:port 3000 :join? false}))))
 
 (defn halt []
   (when @server
@@ -23,4 +26,4 @@
 (defn restart []
   (when @server
     (halt)
-    (start)))
+    (run)))
