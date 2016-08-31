@@ -10,13 +10,13 @@
   (-> (hash/sha256 row-pwd)
       (bytes->hex)))
 
-(defn authenticate
+(defn find-user
+  "メアドとパスワードからユーザーを探す"
   [email pwd]
-  (letfn [(test [pwd user] (when (= (pwd->hash pwd) (:password user))
-                             (:id user)))]
-    (->> (select e/users
-                 (fields :id :email_address :password)
-                 (where {:email_address email
-                         :user_statuses_id 1}))
-         first
-         (test pwd))))
+  (let [user (first (select e/users
+                            (fields :id :email_address :password)
+                            (where {:email_address email
+                                    :user_statuses_id 1})))]
+    (if (= (pwd->hash pwd) (:password user))
+      [true (dissoc user :password)]
+      [false {:message "Invalid username or password."}])))

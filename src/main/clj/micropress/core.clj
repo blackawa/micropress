@@ -4,15 +4,26 @@
             [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
             [ring.middleware.edn :refer [wrap-edn-params]]
-            [micropress.handler.auth :as auth]))
+            [micropress.handler.auth :as auth]
+            [micropress.middleware :refer [wrap-edn-response]]))
 
 (defonce server (atom nil))
+
+(defn- hoge
+  [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (println res)
+      (assoc res :body (pr-str (:body res))))))
 
 (defroutes app
   (-> (routes
        (routes auth/routes)
        (route/not-found "<h1>404 Not found</h1>"))
-      wrap-edn-params))
+      ;; middleware for request
+      wrap-edn-params
+      ;; middleware for response
+      wrap-edn-response))
 
 (defn run []
   (when-not @server

@@ -9,11 +9,11 @@
   [req]
   (let [params (:params req)
         email (:email params)
-        pwd (:pwd params)]
-    (-> (auth/authenticate email pwd)
-      pr-str
-      res/response
-      res/edn)))
+        pwd (:pwd params)
+        [ok? res] (auth/find-user email pwd)]
+    (if ok?
+      (res/created "Sorry, implementing..." res)
+      (res/bad-request res))))
 
 (defroutes routes
   (context "/create-auth-token" _
