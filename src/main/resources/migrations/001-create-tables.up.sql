@@ -28,7 +28,7 @@ foreign key (authorities_id) references authorities(id)
 );
 --;;
 create table user_sessions (
-session_uuid varchar(26) not null primary key,
+token varchar(26) not null primary key,
 users_id int not null,
 content blob,
 expire_time timestamp not null,
