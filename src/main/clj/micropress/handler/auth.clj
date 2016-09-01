@@ -12,7 +12,7 @@
         pwd (:pwd params)
         [ok? res] (auth/find-user email pwd)]
     (if ok?
-      (res/created "Sorry, implementing..." res)
+      (res/created "Sorry, location url is under construction." (assoc res :token (auth/create-token res)))
       (res/bad-request res))))
 
 (defroutes routes
