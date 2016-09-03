@@ -3,6 +3,7 @@
             [compojure.route :as route]
             [micropress.util.response :as res]
             [micropress.service.auth :as auth]
+            [micropress.repository :as repo]
             [clojure.edn :as edn]))
 
 (defn create-auth-token
@@ -13,8 +14,8 @@
         [ok? res] (auth/find-user email pwd)]
     (if ok?
       (let [token (auth/create-token res)]
-
-        (res/created "Sorry, location url is under construction." (assoc res :token token)))
+        (repo/insert-session (:id res) token)
+        (res/created "" (assoc res :token token)))
       (res/bad-request res))))
 
 (defroutes routes
