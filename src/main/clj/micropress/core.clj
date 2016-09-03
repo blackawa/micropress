@@ -3,17 +3,24 @@
             [compojure.route :as route]
             [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
-            [micropress.handler.entry :as entry]))
+            [ring.middleware.edn :refer [wrap-edn-params]]
+            [micropress.handler.auth :as auth]
+            [micropress.middleware :refer [wrap-edn-response]]))
 
 (defonce server (atom nil))
 
-(defroutes handler
-  (routes entry/routes)
-  (route/not-found "<h1>404 Not found</h1>"))
+(defroutes app
+  (-> (routes
+       (routes auth/routes)
+       (route/not-found "<h1>404 Not found</h1>"))
+      ;; middleware for request
+      wrap-edn-params
+      ;; middleware for response
+      wrap-edn-response))
 
-(defn start []
+(defn run []
   (when-not @server
-    (reset! server (server/run-jetty #'handler {:port 3000 :join? false}))))
+    (reset! server (server/run-jetty #'app {:port 3000 :join? false}))))
 
 (defn halt []
   (when @server
@@ -23,4 +30,4 @@
 (defn restart []
   (when @server
     (halt)
-    (start)))
+    (run)))
