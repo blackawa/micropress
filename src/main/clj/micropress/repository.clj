@@ -2,7 +2,7 @@
   (:import [java.sql SQLException])
   (:require [clj-time.core :as c]
             [clj-time.jdbc]
-            [korma.core :refer [insert values]]
+            [korma.core :refer [insert values select where order]]
             [micropress.entity :as e]))
 
 (defn insert-session
@@ -13,3 +13,8 @@
                  (values {:users_id id :token token :expire_time expire-time}))
          {:ok? true :message nil}
          (catch SQLException e {:ok? false :message (.getMessage e)}))))
+
+(defn find-session
+  [token]
+  (select e/user-sessions
+          (where {:token token})))

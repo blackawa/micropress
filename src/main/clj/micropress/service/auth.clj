@@ -4,7 +4,8 @@
             [clj-time.coerce :as c]
             [clj-time.core :as t]
             [korma.core :refer [select fields where]]
-            [micropress.entity :as e]))
+            [micropress.entity :as e]
+            [micropress.repository :as repo]))
 
 (defn- hash
   "SHA256ハッシュ値に変換する"
@@ -30,3 +31,11 @@
       c/to-long
       (str (:id user))
       hash))
+
+(defn validate-token
+  "トークンが有効ならtrueを返却する"
+  [token]
+  (->> (repo/find-session token)
+       (filter #(pos? (t/in-seconds (t/interval (t/now) (:expire_time %)))))
+       empty?
+       not))

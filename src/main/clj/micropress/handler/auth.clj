@@ -1,10 +1,8 @@
 (ns micropress.handler.auth
   (:require [compojure.core :refer [defroutes context POST]]
-            [compojure.route :as route]
             [micropress.util.response :as res]
             [micropress.service.auth :as auth]
-            [micropress.repository :as repo]
-            [clojure.edn :as edn]))
+            [micropress.repository :as repo]))
 
 (defn create-auth-token
   [req]
@@ -19,5 +17,5 @@
       (res/bad-request res))))
 
 (defroutes routes
-  (context "/create-auth-token" _
+  (context "/api/create-auth-token" _
            (POST "/" _ create-auth-token)))

@@ -8,3 +8,11 @@
   {:status  400
    :headers {}
    :body    body})
+
+(defn unauthorized
+  ([body]
+   (unauthorized {} body))
+  ([headers body]
+   {:status 401
+    :headers headers
+    :body body}))
