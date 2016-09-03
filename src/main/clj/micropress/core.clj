@@ -9,13 +9,6 @@
 
 (defonce server (atom nil))
 
-(defn- hoge
-  [handler]
-  (fn [req]
-    (let [res (handler req)]
-      (println res)
-      (assoc res :body (pr-str (:body res))))))
-
 (defroutes app
   (-> (routes
        (routes auth/routes)
