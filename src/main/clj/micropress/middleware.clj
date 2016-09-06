@@ -38,7 +38,7 @@
    I return 401 error if it is invalid token, and I execute handler if it is valid."
   [handler]
   (fn [req]
-    (if-let [token (get-authorization-token req)]
+    (let [token (get-authorization-token req)]
       (if (auth/validate-token token)
         (handler req)
         (unauthorized {"Authorization" (format "Bearer error=invalid token.[%s]" token)})))))
