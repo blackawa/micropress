@@ -28,7 +28,7 @@
 (defn- get-authorization-token
   [req]
   (if-let [v (-> req :headers (get "authorization"))]
-    (let [[type token] (str/split type #"\s+")]
+    (let [[type token] (str/split v #"\s+")]
       (when (= "Bearer" type)
         token))))
 

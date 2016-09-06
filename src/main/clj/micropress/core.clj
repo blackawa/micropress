@@ -10,14 +10,19 @@
 
 (defonce server (atom nil))
 
+(def ^:private public-api-routes
+  (routes auth/routes))
+(def ^:private secure-api-routes
+  (routes invite/routes))
+
 (def app
   ;; routes which do not require authorization token.
-  (routes (-> auth/routes
+  (routes (-> public-api-routes
               ;; middleware for request
               (wrap-routes wrap-edn-params)
               ;; middleware for response
               (wrap-routes wrap-edn-response))
-          (-> invite/routes
+          (-> secure-api-routes
               ;; middleware for request
               (wrap-routes wrap-authentication) ;; <- stop process if invalid
               (wrap-routes wrap-edn-params)
