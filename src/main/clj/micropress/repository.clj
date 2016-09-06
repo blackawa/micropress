@@ -2,8 +2,15 @@
   (:import [java.sql SQLException])
   (:require [clj-time.core :as c]
             [clj-time.jdbc]
-            [korma.core :refer [insert values select where order]]
+            [korma.core :refer [insert values select where order delete]]
             [micropress.entity :as e]))
+
+(defn delete-session
+  [user-id]
+  (try (delete e/user-sessions
+                 (where {:users_id user-id}))
+         {:ok? true :message nil}
+         (catch SQLException e {:ok? false :message (.getMessage e)})))
 
 (defn insert-session
   [id token]

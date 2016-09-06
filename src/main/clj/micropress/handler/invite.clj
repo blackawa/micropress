@@ -7,5 +7,5 @@
   (println req))
 
 (defroutes routes
-  (context "/api/invite" _
+  (context "/invite" _
            (POST "/" _ invite-user)))

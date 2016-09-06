@@ -11,9 +11,11 @@
 (defonce server (atom nil))
 
 (def ^:private public-api-routes
-  (routes auth/routes))
+  (routes
+   (context "/api" _ auth/routes)))
 (def ^:private secure-api-routes
-  (routes invite/routes))
+  (routes
+   (context "/api" _ invite/routes)))
 
 (def app
   ;; routes which do not require authorization token.

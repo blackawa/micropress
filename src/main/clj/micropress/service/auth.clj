@@ -36,6 +36,7 @@
   "トークンが有効ならtrueを返却する"
   [token]
   (->> (repo/find-session token)
-       (filter #(pos? (t/in-seconds (t/interval (t/now) (:expire_time %)))))
+       (filter #(and (t/after? (:expire_time %) (t/now))
+                     (pos? (t/in-seconds (t/interval (t/now) (:expire_time %))))))
        empty?
        not))
