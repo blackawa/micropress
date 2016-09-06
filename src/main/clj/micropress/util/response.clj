@@ -10,8 +10,8 @@
    :body    body})
 
 (defn unauthorized
-  ([body]
-   (unauthorized {} body))
+  ([headers]
+   (unauthorized headers ""))
   ([headers body]
    {:status 401
     :headers headers

@@ -41,4 +41,4 @@
     (if-let [token (get-authorization-token req)]
       (if (auth/validate-token token)
         (handler req)
-        (unauthorized {"uthorization" (format "Bearer error=invalid token.[%s]" token)})))))
+        (unauthorized {"Authorization" (format "Bearer error=invalid token.[%s]" token)})))))
