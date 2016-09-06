@@ -12,10 +12,10 @@
   (table :user_statuses))
 (defentity authorities)
 (defentity user-sessions
-  (table :user_sessions))
+  (table :user_sessions)
+  (belongs-to users))
 (defentity users
   (belongs-to user-statuses)
-  (belongs-to user-sessions)
   (many-to-many authorities :user_authorities))
 (defentity invitations)
 (defentity user-histories

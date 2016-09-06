@@ -6,7 +6,7 @@
             [ring.middleware.edn :refer [wrap-edn-params]]
             [micropress.handler.auth :as auth]
             [micropress.handler.invite :as invite]
-            [micropress.middleware :refer [wrap-edn-response wrap-authentication]]))
+            [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization]]))
 
 (defonce server (atom nil))
 
@@ -26,7 +26,8 @@
               (wrap-routes wrap-edn-response))
           (-> secure-api-routes
               ;; middleware for request
-              (wrap-routes wrap-authentication) ;; <- stop process if invalid
+              (wrap-routes wrap-authentication)
+              (wrap-routes wrap-authorization)
               (wrap-routes wrap-edn-params)
               ;; middleware for response
               (wrap-routes wrap-edn-response))

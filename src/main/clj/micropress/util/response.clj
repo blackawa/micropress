@@ -16,3 +16,11 @@
    {:status 401
     :headers headers
     :body body}))
+
+(defn forbidden
+  ([headers]
+   (forbidden headers ""))
+  ([headers body]
+   {:status 403
+    :headers headers
+    :body body}))
