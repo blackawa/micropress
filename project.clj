@@ -23,8 +23,9 @@
   :source-paths ["src/main/clj"]
   :test-paths ["src/test/clj"]
   :resource-paths ["src/main/resources"]
-
   :clean-targets ^{:protect false} ["target"]
+
+  :repl-options {:port 51423}
 
   :profiles {:dev {:dependencies [[alembic "0.3.2"]]
                    :source-paths ["src/main/clj" "dev"]

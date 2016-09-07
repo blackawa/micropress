@@ -4,4 +4,6 @@
 
 (defn find-by-token
   [token]
-  (:authorities (first (select e/user-sessions (with e/users (with e/authorities)) (where {:token token})))))
+  (:authorities (first (select e/user-sessions
+                               (with e/users (with e/authorities))
+                               (where {:token token})))))
