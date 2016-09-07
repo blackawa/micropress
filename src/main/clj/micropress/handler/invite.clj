@@ -2,9 +2,10 @@
   (:require [compojure.core :refer [defroutes context POST]]
             [compojure.route :as route]))
 
-(defn invite-user
+(defn- invite-user
   [req]
-  (println req))
+  (let [{{email :email auth :auth} :params} req]
+    (println email "," auth)))
 
 (defroutes routes
   (context "/invite" _
