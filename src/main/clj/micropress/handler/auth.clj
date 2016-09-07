@@ -4,7 +4,7 @@
             [micropress.service.auth :as auth]
             [micropress.repository :as repo]))
 
-(defn renew-auth-token
+(defn- renew-auth-token
   [req]
   (let [params (:params req)
         email (:email params)
