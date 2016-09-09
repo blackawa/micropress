@@ -24,3 +24,11 @@
    {:status 403
     :headers headers
     :body body}))
+
+(defn accepted
+  ([]
+   (accepted ""))
+  ([body]
+  {:status 202
+   :headers {}
+   :body body}))

@@ -6,13 +6,10 @@
 
 (defn- invite-user
   [req]
-  (let [{{email :email auth :auth} :params} req
-        ok? (and (invite/invite email auth)
-                 (invite/send-invite-mail email))]
-    (if ok?
-      () ;; 処理は受け付けられました的なレスポンス返す
-      () ;; 例外情報を返す？
-      )))
+  (let [{{email :email auth :auth} :params} req]
+    (invite/invite email auth)
+    (invite/send-invite-mail email)
+    (res/created "" "")))
 
 (defroutes routes
   (context "/invite" _

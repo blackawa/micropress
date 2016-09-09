@@ -1,5 +1,5 @@
 (ns micropress.entity
-  (:require [korma.core :refer :all]
+  (:require [korma.core :refer [defentity table belongs-to many-to-many pk]]
             [korma.db :refer [defdb mysql]]))
 
 (defdb db (mysql {:host "127.0.0.1"
@@ -19,6 +19,8 @@
   (belongs-to users))
 (defentity invitees
   (many-to-many authorities :invitee_authorities))
+(defentity invitee-authorities
+  (table :invitee_authorities)) ;; 本当は定義したくないが、そうしないとINSERTする方法が思いつかない.
 (defentity user-histories
   (table :user_histories)
   (pk [:id :user_id :updated_time]))

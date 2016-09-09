@@ -7,8 +7,11 @@
    ユーザーの招待情報を登録する."
   [email auth]
   (let [token (ecp/create-token-by-obj email)]
-    (repo/insert-invitee token email)))
+    (repo/insert-invitee token email auth)))
 
 (defn send-invite-mail
   "メンバー招待のメールを送信する."
-  [email])
+  [email]
+  (println "[mock]mailing to" email)
+  ;; okの結果を返す
+  true)

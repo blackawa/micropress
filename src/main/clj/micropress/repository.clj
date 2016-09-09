@@ -26,7 +26,9 @@
           (where {:token token})))
 
 (defn insert-invitee
-  [token email]
-  (let [expire-time (c/plus (c/now) (c/days 1))]
-    (insert e/invitees
-          (values {:invitation_token token :email_address email :expire_time expire-time}))))
+  [token email auth]
+  (let [expire-time (c/plus (c/now) (c/days 1))
+        invitee-id (:generated_key (insert e/invitees (values {:invitation_token token :email_address email :expire_time expire-time})))]
+    (insert e/invitee-authorities
+            (values (map (fn [authorities-id] {:invitees_id invitee-id :authorities_id authorities-id}) auth)))
+    {:ok? true :invitee-id invitee-id}))
