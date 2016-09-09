@@ -37,6 +37,35 @@ Micropress could not send e-mail to specified address, but micropress does nothi
 
 An user sends invitation to a wrong address. He accesses to a inivitation list page. He delete invitation. Micropress deletes invitation information.
 
+## view invitations
+
+### Basic course
+
+1. An user requests invitations list page, and micropress validates his privilege. Then micropress returns invitations list.
+
+### Alternative courses
+
+An user is not an administrator, so micropress returns 403 error.
+
+## withdraw invitation
+
+### Basic course
+
+1. An user requests invitations list page, and micropress returns it.
+1. An user select an invitation to withdraw, so micropress withdraws it.
+
+### Alternative courses
+
+He mis-typed invitation address, and he noticed it just after sending invitation. So he clicked 'cancel' button in invitation completion page.
+
+## accept invitation
+
+### Basic course
+
+1. An user receives email from micropress, and he clicks link to accept invitation.
+1. Micropress returns invitation acception page. He select to join the micropress.
+1. Micropress returns welcome page. Then the user jumps to his dashboard by 'go to dashboard' button.
+
 ## expel user
 
 ### Basic course
