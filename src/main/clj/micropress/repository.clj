@@ -14,8 +14,7 @@
 
 (defn insert-session
   [id token]
-  (let [now (c/now)
-        expire-time (c/plus (c/now) (c/minutes 30))]
+  (let [expire-time (c/plus (c/now) (c/minutes 30))]
     (try (insert e/user-sessions
                  (values {:users_id id :token token :expire_time expire-time}))
          {:ok? true :message nil}
@@ -25,3 +24,9 @@
   [token]
   (select e/user-sessions
           (where {:token token})))
+
+(defn insert-invitee
+  [token email]
+  (let [expire-time (c/plus (c/now) (c/days 1))]
+    (insert e/invitees
+          (values {:invitation_token token :email_address email :expire_time expire-time}))))

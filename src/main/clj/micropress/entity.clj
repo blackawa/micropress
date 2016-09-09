@@ -17,7 +17,8 @@
 (defentity user-sessions
   (table :user_sessions)
   (belongs-to users))
-(defentity invitations)
+(defentity invitees
+  (many-to-many authorities :invitee_authorities))
 (defentity user-histories
   (table :user_histories)
   (pk [:id :user_id :updated_time]))
