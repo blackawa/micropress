@@ -2,7 +2,12 @@
   (:require [compojure.core :refer [defroutes context POST]]
             [compojure.route :as route]
             [micropress.service.invite :as invite]
-            [micropress.util.response :as res]))
+            [micropress.util.response :as res]
+            [micropress.util.validator :as v]
+            [schema.core :as s]))
+
+(def ^:private invite-user-req-validator
+  {:params {:email v/email-format :auth [s/Num]}})
 
 (defn- invite-user
   [req]
