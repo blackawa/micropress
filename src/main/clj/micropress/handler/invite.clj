@@ -6,15 +6,17 @@
             [micropress.util.validator :as v]
             [schema.core :as s]))
 
-(def ^:private invite-user-req-validator
-  {:params {:email v/email-format :auth [s/Num]}})
+(def ^:private auth-format [s/Num])
 
 (defn- invite-user
   [req]
-  (let [{{email :email auth :auth} :params} req]
-    (invite/invite email auth)
-    (invite/send-invite-mail email)
-    (res/created "" "")))
+  (let [{{email :email auth :auth} :params} req
+        [ok? res] (v/validate {:email v/email-format :auth auth-format} {:email email :auth auth})]
+    (if ok?
+      (do (invite/invite email auth)
+          (invite/send-invite-mail email)
+          (res/created "" {}))
+      (res/bad-request res))))
 
 (defroutes routes
   (context "/invite" _
