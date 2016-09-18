@@ -16,7 +16,12 @@
 (defn- valid-auth?
   "権限IDが正しいか調べる"
   [auth]
-  [true {:msg nil :target auth}]) ;;todo implement me
+  (let [ok? (->> auth
+                 (map #(not (nil? (r/find-auth-by-id %))))
+                 (reduce (fn [b1 b2] (and b1 b2))))]
+    (if ok?
+      [true {:msg nil :target auth}]
+      [false {:msg "Contains invalid auth."} :target auth])))
 
 (defn validate
   [email auth]

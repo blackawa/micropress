@@ -37,3 +37,7 @@
   [email]
   (select e/users
           (where {:email_address email :user_statuses_id 1})))
+
+(defn find-auth-by-id
+  [auth-id]
+  (first (select e/authorities (where {:id auth-id}))))
