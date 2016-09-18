@@ -8,3 +8,27 @@
   {:status  400
    :headers {}
    :body    body})
+
+(defn unauthorized
+  ([headers]
+   (unauthorized headers ""))
+  ([headers body]
+   {:status 401
+    :headers headers
+    :body body}))
+
+(defn forbidden
+  ([headers]
+   (forbidden headers ""))
+  ([headers body]
+   {:status 403
+    :headers headers
+    :body body}))
+
+(defn accepted
+  ([]
+   (accepted ""))
+  ([body]
+  {:status 202
+   :headers {}
+   :body body}))

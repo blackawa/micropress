@@ -4,6 +4,8 @@ delete from authorities;
 --;;
 alter table authorities auto_increment = 1;
 --;;
+delete from user_sessions;
+--;;
 delete from users;
 --;;
 alter table users auto_increment = 1;

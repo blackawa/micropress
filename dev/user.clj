@@ -4,13 +4,19 @@
             [buddy.core.codecs :refer [bytes->hex]]
             [micropress.core :refer :all]
             [ragtime.jdbc :as jdbc]
-            [ragtime.repl :refer :all]))
+            [ragtime.repl :as ragtime]))
 
 (defn reload-deps []
   (a/load-project))
 
 (def config {:datastore (jdbc/sql-database {:connection-uri "jdbc:mysql://localhost:3306/micropress?user=micropress&password=p@ssw0rd&autoReconnect=true&useSSL=false"})
              :migrations (jdbc/load-resources "migrations")})
+
+(defn migrate []
+  (ragtime/migrate config))
+
+(defn rollback []
+  (ragtime/rollback config))
 
 (defn hash-pwd
   "平文パスワードをSHA-256ハッシュ化して返却する."

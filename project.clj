@@ -18,13 +18,15 @@
                  [ragtime "0.6.0"]
                  ;; other libraries
                  [buddy "1.0.0"]
-                 [clj-time "0.12.0"]]
+                 [clj-time "0.12.0"]
+                 [prismatic/schema "1.1.3"]]
 
   :source-paths ["src/main/clj"]
   :test-paths ["src/test/clj"]
   :resource-paths ["src/main/resources"]
-
   :clean-targets ^{:protect false} ["target"]
+
+  :repl-options {:port 51423}
 
   :profiles {:dev {:dependencies [[alembic "0.3.2"]]
                    :source-paths ["src/main/clj" "dev"]
