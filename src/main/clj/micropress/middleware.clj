@@ -51,7 +51,9 @@
   [token uri request-method]
   (let [authorizations (set (map #(:id %) (authorization/find-by-token token)))]
     (->> const/uri-method-defs
-         (filter #(= uri (:uri %)))
+         (filter #(if (string? (:uri %))
+                    (= uri (:uri %))
+                    (not (nil? (re-find (:uri %) uri)))))
          (filter #(= request-method (:request-method %)))
          ;; filter by user's authorities
          (filter #(some authorizations (:auth %)))

@@ -46,3 +46,11 @@
 (defn find-auth-by-id
   [auth-id]
   (first (select e/authorities (where {:id auth-id}))))
+
+(defn find-invitee-by-id
+  [invitee-id]
+  (first (select e/invitees (where {:id invitee-id}))))
+
+(defn delete-invitee
+  [invitee-id]
+  (delete e/invitees (where {:id invitee-id})))

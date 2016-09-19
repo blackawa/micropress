@@ -1,5 +1,9 @@
 delete from user_authorities;
 --;;
+delete from invitee_authorities;
+--;;
+delete from invitees;
+--;;
 delete from authorities;
 --;;
 alter table authorities auto_increment = 1;

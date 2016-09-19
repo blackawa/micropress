@@ -23,7 +23,7 @@ create table user_authorities (
 users_id int not null,
 authorities_id int not null,
 primary key (users_id, authorities_id),
-foreign key (users_id) references users(id),
+foreign key (users_id) references users(id) on delete cascade,
 foreign key (authorities_id) references authorities(id)
 );
 --;;
@@ -46,7 +46,7 @@ create table invitee_authorities (
 invitees_id int not null,
 authorities_id int not null,
 primary key (invitees_id, authorities_id),
-foreign key (invitees_id) references invitees(id),
+foreign key (invitees_id) references invitees(id) on delete cascade,
 foreign key (authorities_id) references authorities(id)
 );
 --;;
