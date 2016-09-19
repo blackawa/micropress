@@ -2,7 +2,7 @@
   (:import [java.sql SQLException])
   (:require [clj-time.core :as c]
             [clj-time.jdbc]
-            [korma.core :refer [insert values select where delete]]
+            [korma.core :refer [insert values select where fields delete]]
             [micropress.entity :as e]))
 
 (defn delete-session
@@ -32,6 +32,11 @@
     (insert e/invitee-authorities
             (values (map (fn [authorities-id] {:invitees_id invitee-id :authorities_id authorities-id}) auth)))
     {:ok? true :invitee-id invitee-id}))
+
+(defn find-all-invitees
+  []
+  (select e/invitees
+          (fields :id :email_address :expire_time)))
 
 (defn find-user-by-email
   [email]
