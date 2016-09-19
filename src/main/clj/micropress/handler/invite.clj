@@ -19,16 +19,22 @@
   [req]
   (res/ok (i/view-invitees)))
 
+(defn- view-invitee
+  [req]
+  )
+
 (defn- withdraw-invitation
   [req]
   (let [invitee-id (-> req :params :invitee-id)
         [ok? msg] (vi/validate-invitee-id invitee-id)]
     (if ok?
       (do (i/delete-invitation invitee-id)
-          (res/ok)))))
+          (res/ok))
+      (res/bad-request {:msg msg}))))
 
 (defroutes routes
   (context "/invitation" _
            (GET "/" _ view-invitees)
+           (GET "/:token" _ view-invitee)
            (POST "/" _ invite-user)
            (DELETE "/:invitee-id" _ withdraw-invitation)))

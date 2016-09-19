@@ -38,6 +38,11 @@
   (select e/invitees
           (fields :id :email_address :expire_time)))
 
+(defn find-invitee-by-token
+  [token]
+  (->> (select e/invitees
+               (where {:invitation_token token}))))
+
 (defn find-user-by-email
   [email]
   (select e/users

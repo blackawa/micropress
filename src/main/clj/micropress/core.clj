@@ -6,13 +6,16 @@
             [ring.middleware.edn :refer [wrap-edn-params]]
             [micropress.handler.auth :as auth]
             [micropress.handler.invite :as invite]
+            [micropress.handler.join :as join]
             [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization]]))
 
 (defonce server (atom nil))
 
 (def ^:private public-api-routes
   (routes
-   (context "/api" _ auth/routes)))
+   (context "/api" _
+            auth/routes
+            join/routes)))
 (def ^:private secure-api-routes
   (routes
    (context "/api" _ invite/routes)))
