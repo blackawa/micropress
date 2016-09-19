@@ -23,10 +23,22 @@
       [true {:msg nil :target auth}]
       [false {:msg "Contains invalid auth."} :target auth])))
 
-(defn validate
+(defn- valid-invitee-id?
+  [invitee-id]
+  (let [ok? (not (nil? (r/find-invitee-by-id invitee-id)))]
+    (if ok?
+      [true {:msg nil :target invitee-id}]
+      [false {:msg "Invalid invitation id."} :target invitee-id])))
+
+(defn validate-invitation
   [email auth]
   (v/aggregate
    (v/validate v/email-format email "Invalid Email Address.")
    (v/validate auth-format auth "Invalid Authorities.")
    (isnt-he-user? email)
    (valid-auth? auth)))
+
+(defn validate-invitee-id
+  [invitee-id]
+  (v/aggregate
+   (valid-invitee-id? invitee-id)))

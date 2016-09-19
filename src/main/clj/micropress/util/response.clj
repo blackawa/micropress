@@ -32,3 +32,9 @@
   {:status 202
    :headers {}
    :body body}))
+
+(defn ok
+  ([]
+   (ok {}))
+  ([body]
+   (res/response body)))

@@ -22,3 +22,7 @@
   []
   (->> (r/find-all-invitees)
        (map #(assoc % :expire_time (f/unparse (f/formatter "yyyy/MM/dd HH:mm:ss") (:expires_time %))))))
+
+(defn delete-invitation
+  [invitee-id]
+  (r/delete-invitee invitee-id))
