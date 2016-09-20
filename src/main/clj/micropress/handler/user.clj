@@ -9,8 +9,11 @@
 
 (defn- view-user
   [req]
-  (let [user-id (get-in req [:params :user-id])]
-    (res/ok (u/view-user user-id))))
+  (let [user-id (get-in req [:params :user-id])
+        user (u/view-user user-id)]
+    (if (not (nil? user))
+      (res/ok user)
+      (res/not-found "User not found."))))
 
 (defroutes routes
   (context "/user" _
