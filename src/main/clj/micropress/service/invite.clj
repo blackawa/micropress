@@ -2,7 +2,8 @@
   (:require [clj-time.core :as c]
             [clj-time.format :as f]
             [micropress.repository :as r]
-            [micropress.util.encrypt :as ecp]))
+            [micropress.util.encrypt :as ecp]
+            [micropress.util.time :as t]))
 
 (defn invite
   "メールアドレスと権限IDの配列から
@@ -26,13 +27,13 @@
   "招待一覧を返す"
   []
   (->> (r/find-all-invitees)
-       (map #(assoc % :expire_time (parse-time (:expires_time %))))))
+       (map #(assoc % :expire_time (t/time->string (:expire_time %))))))
 
 (defn view-invitee
   [invitee-token]
   (->> (r/find-invitee-by-token invitee-token)
        (filter #(c/before? (c/now) (:expire_time %)))
-       (map #(assoc % :expire_time (parse-time (:expires_time %))))
+       (map #(assoc % :expire_time (t/time->string (:expire_time %))))
        first))
 
 (defn delete-invitation
