@@ -38,3 +38,9 @@
    (ok {}))
   ([body]
    (res/response body)))
+
+(defn not-found
+  ([]
+   (not-found {}))
+  ([body]
+   (res/not-found body)))

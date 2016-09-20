@@ -3,6 +3,8 @@
   (:require [schema.core :as s]))
 
 (def email-format #"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
+(def username #"^[a-zA-Z0-9_-]+$")
+(def password (re-pattern "^[a-zA-Z0-9!@#$%^&*-_=+|\\/?<>]+$"))
 
 (defn validate
   "バリデーションを実行する.

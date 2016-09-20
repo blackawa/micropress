@@ -38,6 +38,11 @@
   (select e/invitees
           (fields :id :email_address :expire_time)))
 
+(defn find-invitee-by-token
+  [token]
+  (->> (select e/invitees
+               (where {:invitation_token token}))))
+
 (defn find-user-by-email
   [email]
   (select e/users
@@ -54,3 +59,17 @@
 (defn delete-invitee
   [invitee-id]
   (delete e/invitees (where {:id invitee-id})))
+
+(defn insert-user
+  "ユーザー情報と権限を登録する."
+  [username nickname password email invitee-id]
+  (let [user-id (:generated_key (insert e/users (values {:username username :nickname nickname :password password :email_address email
+                                                         :user_statuses_id 1})))
+        auths (map (fn [m] {:users_id user-id :authorities_id (:authorities_id m)})
+                   (select e/invitee-authorities (where {:invitees_id invitee-id})))]
+    (insert e/user-authorities (values auths))
+    {:user-id user-id}))
+
+(defn find-invitee-auth-by-id
+  [invitee-id]
+  (select e/invitee-authorities (where {:invitees_id invitee-id})))
