@@ -14,6 +14,8 @@
 (defentity users
   (belongs-to user-statuses)
   (many-to-many authorities :user_authorities))
+(defentity user-authorities
+  (table :user_authorities)) ;; 本当は定義したくないが、そうしないとINSERTする方法が思いつかない.
 (defentity user-sessions
   (table :user_sessions)
   (belongs-to users))

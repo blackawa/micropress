@@ -1,12 +1,15 @@
 (ns micropress.validator.join
-  (:require [micropress.repository :as r]
+  (:require [clj-time.core :as t]
+            [micropress.repository :as r]
             [micropress.service.invite :as invite]
             [micropress.util.validator :as v]
             [schema.core :as s]))
 
 (defn- valid-invitee-token?
   [token]
-  (let [ok? (not (nil? (r/find-invitee-by-token token)))]
+  (let [ok? (not (nil? (->> (r/find-invitee-by-token token)
+                            (filter #(t/before? (t/now) (:expire_time %)))
+                            first)))]
     (if ok?
       [true {:msg nil :target token}]
       [false {:msg "Invalid token." :target token}])))
@@ -20,7 +23,7 @@
 
 (defn- valid-nickname?
   [nickname]
-  (let [ok? (< (count nickname) 128)]
+  (let [ok? (and (< 0 (count nickname)) (< (count nickname) 128))]
     [ok? {:msg (when (not ok?) "Nickname should have 1 - 128 characters.") :target nickname}]))
 
 (defn- valid-password?
@@ -31,7 +34,7 @@
     [ok? {:msg (when (not ok?) "Password should have 8 - 128 characters.") :target password}]))
 
 (defn validate-acception
-  [token username nickname password]
+  [{:keys [token username nickname password]}]
   (v/aggregate
    (valid-invitee-token? token)
    (valid-username? username)

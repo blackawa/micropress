@@ -15,13 +15,10 @@
 
 (defn- accept-invitation
   [req]
-  (let [token (-> req :params :token)
-        username (-> req :params :username)
-        nickname (-> req :params :nickname)
-        password (-> req :params :password)
-        [ok? msg] (v/validate-acception token username password)]
+  (let [params (:params req)
+        [ok? msg] (v/validate-acception params)]
     (if ok?
-      ""
+      (res/ok (j/accpet-invitation params))
       (res/bad-request msg))))
 
 (defroutes routes
