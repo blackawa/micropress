@@ -1,7 +1,10 @@
 (ns micropress.validator.invite
-  (:require [micropress.repository :as r]
+  (:require [clj-time.core :as t]
+            [micropress.repository :as r]
             [micropress.service.invite :as invite]
             [micropress.util.validator :as v]
+            [micropress.validator.auth :as va]
+            [micropress.validator.user :as vu]
             [schema.core :as s]))
 
 (def auth-format [s/Num])
@@ -13,30 +16,29 @@
     [true {:msg nil :target email}]
     [false {:msg (format "%s is already used." email) :target email}]))
 
-(defn- valid-auth?
-  "権限IDが正しいか調べる"
-  [auth]
-  (let [ok? (->> auth
-                 (map #(not (nil? (r/find-auth-by-id %))))
-                 (reduce (fn [b1 b2] (and b1 b2))))]
-    (if ok?
-      [true {:msg nil :target auth}]
-      [false {:msg "Contains invalid auth."} :target auth])))
-
-(defn- valid-invitee-id?
+(defn valid-invitee-id?
   [invitee-id]
   (let [ok? (not (nil? (r/find-invitee-by-id invitee-id)))]
     (if ok?
       [true {:msg nil :target invitee-id}]
       [false {:msg "Invalid invitation id."} :target invitee-id])))
 
+(defn valid-invitee-token?
+  [token]
+  (let [ok? (not (nil? (->> (r/find-invitee-by-token token)
+                            (filter #(t/before? (t/now) (:expire_time %)))
+                            first)))]
+    (if ok?
+      [true {:msg nil :target token}]
+      [false {:msg "Invalid token." :target token}])))
+
 (defn validate-invitation
   [email auth]
   (v/aggregate
-   (v/validate v/email-format email "Invalid Email Address.")
+   (vu/valid-email? email)
    (v/validate auth-format auth "Invalid Authorities.")
    (isnt-he-user? email)
-   (valid-auth? auth)))
+   (va/valid-auth? auth)))
 
 (defn validate-invitee-id
   [invitee-id]

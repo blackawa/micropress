@@ -83,3 +83,7 @@
   (select e/users
           (with e/authorities)
           (where {:id user-id})))
+
+(defn find-user-status-by-id
+  [user-status-id]
+  (select e/user-statuses (where {:id user-status-id})))
