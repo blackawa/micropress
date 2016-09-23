@@ -1,6 +1,10 @@
-drop table article_status_histories;
+drop table article_tags;
+--;;
+drop table article_histories;
 --;;
 drop table articles;
+--;;
+drop table tags;
 --;;
 drop table body_types;
 --;;
