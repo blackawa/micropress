@@ -88,6 +88,12 @@
           (with e/authorities)
           (where {:id user-id})))
 
+(defn find-active-user
+  [user-id]
+  (select e/users
+          (with e/authorities)
+          (where {:id user-id :user_statuses_id 1})))
+
 (defn find-user-status-by-id
   [user-status-id]
   (select e/user-statuses (where {:id user-status-id})))

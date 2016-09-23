@@ -42,6 +42,12 @@
     [true {:msg nil :target user-id}]
     [false {:msg "Invalid user id." :target user-id}]))
 
+(defn is-active-user?
+  [user-id]
+  (if-let [ok? (not (empty? (r/find-active-user user-id)))]
+    [true {:msg nil :target user-id}]
+    [false {:msg "Invalid user id." :target user-id}]))
+
 (defn validate-update
   [{:keys [user-id username nickname password email image-url user-status-id auth]}]
   (v/aggregate
