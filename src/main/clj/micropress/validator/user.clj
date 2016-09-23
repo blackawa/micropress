@@ -36,9 +36,16 @@
     [true {:msg nil :target user-status-id}]
     [false {:msg "Invalid user status." :target user-status-id}]))
 
+(defn valid-user-id?
+  [user-id]
+  (if-let [ok? (not (empty? (r/find-user user-id)))]
+    [true {:msg nil :target user-id}]
+    [false {:msg "Invalid user id." :target user-id}]))
+
 (defn validate-update
-  [{:keys [username nickname password email image-url user-status-id auth]}]
+  [{:keys [user-id username nickname password email image-url user-status-id auth]}]
   (v/aggregate
+   (valid-user-id? user-id)
    (valid-username? username)
    (valid-nickname? nickname)
    (valid-password? password)

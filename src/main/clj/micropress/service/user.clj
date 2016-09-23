@@ -31,3 +31,7 @@
                :user_statuses_id user_statuses_id
                :authorities authorities}))
        first))
+
+(defn update-user
+  [{:keys [user-id username nickname password email image-url user-status-id auth] :as params}]
+  (r/update-user (assoc params :password (ecp/hash password))))
