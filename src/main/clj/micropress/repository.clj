@@ -2,7 +2,11 @@
   (:import [java.sql SQLException])
   (:require [clj-time.core :as c]
             [clj-time.jdbc]
-            [korma.core :refer [insert values select where fields delete]]
+            [korma.core :refer [insert values
+                                select fields
+                                delete
+                                update set-fields
+                                where with]]
             [micropress.entity :as e]))
 
 (defn delete-session
@@ -73,3 +77,31 @@
 (defn find-invitee-auth-by-id
   [invitee-id]
   (select e/invitee-authorities (where {:invitees_id invitee-id})))
+
+(defn find-users
+  []
+  (select e/users (with e/authorities)))
+
+(defn find-user
+  [user-id]
+  (select e/users
+          (with e/authorities)
+          (where {:id user-id})))
+
+(defn find-user-status-by-id
+  [user-status-id]
+  (select e/user-statuses (where {:id user-status-id})))
+
+(defn update-user
+  "与えられたユーザー情報と権限でユーザーを更新する."
+  [{:keys [user-id username nickname password email image-url user-status-id auth] :as params}]
+  (let [auths (map (fn [a] {:users_id user-id :authorities_id a}) auth)]
+    (update e/users (set-fields {:username username
+                                 :nickname nickname
+                                 :password password
+                                 :email_address email
+                                 :image_url image-url
+                                 :user_statuses_id user-status-id})
+            (where {:id user-id}))
+    (delete e/user-authorities (where {:users_id user-id}))
+    (insert e/user-authorities (values auths))))
