@@ -8,7 +8,9 @@
             [micropress.handler.invite :as invite]
             [micropress.handler.join :as join]
             [micropress.handler.user :as user]
-            [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization]]))
+            [micropress.handler.draft :as draft]
+            [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization
+                                           wrap-context]]))
 
 (defonce server (atom nil))
 
@@ -21,17 +23,20 @@
   (routes
    (context "/api" _
             invite/routes
-            user/routes)))
+            user/routes
+            draft/routes)))
 
 (def app
   ;; routes which do not require authorization token.
   (routes (-> public-api-routes
               ;; middleware for request
+              (wrap-routes wrap-context)
               (wrap-routes wrap-edn-params)
               ;; middleware for response
               (wrap-routes wrap-edn-response))
           (-> secure-api-routes
               ;; middleware for request
+              (wrap-routes wrap-context)
               (wrap-routes wrap-authentication)
               (wrap-routes wrap-authorization)
               (wrap-routes wrap-edn-params)

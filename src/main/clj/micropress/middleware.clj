@@ -45,6 +45,15 @@
         (handler req)
         (unauthorized {"Authorization" (format "Bearer error=invalid token.[%s]" token)})))))
 
+(defn wrap-context
+  "ユーザーがログインしていればその情報をリクエストに付加して
+   つぎのhandlerに渡す"
+  [handler]
+  (fn [req]
+    (if-let [user-id (:users_id (authorization/find-by-token (get-authorization-token req)))]
+      (handler (assoc req :context {:user-id user-id}))
+      (handler req))))
+
 (defn- valid-authorization?
   "ユーザーとその権限を引いて、ユーザーがそのパスとHTTPメソッドを実行可能かチェックする.
    トークン自体の有効性はこの関数の責務外."
