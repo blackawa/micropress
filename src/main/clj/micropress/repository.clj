@@ -111,3 +111,7 @@
             (where {:id user-id}))
     (delete e/user-authorities (where {:users_id user-id}))
     (insert e/user-authorities (values auths))))
+
+(defn find-body-type-by-id
+  [id]
+  (first (select e/body-types (where {:id id}))))
