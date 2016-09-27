@@ -11,36 +11,31 @@
 
 (defn- isnt-he-user?
   "すでにユーザーでないかを調べる"
-  [email]
-  (if (empty? (r/find-user-by-email email))
-    [true {:msg nil :target email}]
-    [false {:msg (format "%s is already used." email) :target email}]))
+  [email target]
+  (let [ok? (empty? (r/find-user-by-email email))]
+    (v/->result ok? (when (not ok?) (format "%s is already used." email)) target)))
 
 (defn valid-invitee-id?
-  [invitee-id]
+  [invitee-id target]
   (let [ok? (not (nil? (r/find-invitee-by-id invitee-id)))]
-    (if ok?
-      [true {:msg nil :target invitee-id}]
-      [false {:msg "Invalid invitation id."} :target invitee-id])))
+    (v/->result ok? (when (not ok?) "Invalid invitation id.") target)))
 
 (defn valid-invitee-token?
-  [token]
+  [token target]
   (let [ok? (not (nil? (->> (r/find-invitee-by-token token)
                             (filter #(t/before? (t/now) (:expire_time %)))
                             first)))]
-    (if ok?
-      [true {:msg nil :target token}]
-      [false {:msg "Invalid token." :target token}])))
+    (v/->result ok? (when (not ok?) "Invalid token.") target)))
 
 (defn validate-invitation
   [email auth]
   (v/aggregate
-   (vu/valid-email? email)
-   (v/validate auth-format auth "Invalid Authorities.")
-   (isnt-he-user? email)
-   (va/valid-auth? auth)))
+   (vu/valid-email? email :email)
+   (v/validate auth-format auth :auth "Invalid Authorities.")
+   (isnt-he-user? email :email)
+   (va/valid-auth? auth :auth)))
 
 (defn validate-invitee-id
   [invitee-id]
   (v/aggregate
-   (valid-invitee-id? invitee-id)))
+   (valid-invitee-id? invitee-id :invitee-id)))

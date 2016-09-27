@@ -20,10 +20,10 @@
   [req]
   (let [params (select-keys (:params req) [:user-id :username :nickname :password :email
                                            :image-url :user-status-id :auth])
-        [ok? msg] (vu/validate-update params)]
+        {:keys [ok? messages]} (vu/validate-update params)]
     (if ok?
       (res/ok (u/update-user params))
-      (res/bad-request msg))))
+      (res/bad-request messages))))
 
 (defroutes routes
   (context "/user" _

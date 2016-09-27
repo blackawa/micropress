@@ -10,7 +10,7 @@
 (defn validate-acception
   [{:keys [token username nickname password]}]
   (v/aggregate
-   (vi/valid-invitee-token? token)
-   (vu/valid-username? username)
-   (vu/valid-nickname? nickname)
-   (vu/valid-password? password)))
+   (vi/valid-invitee-token? token :token)
+   (vu/valid-username? username :username)
+   (vu/valid-nickname? nickname :nickname)
+   (vu/valid-password? password :password)))

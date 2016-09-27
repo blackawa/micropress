@@ -12,9 +12,8 @@
                             (fields :id :email_address :password)
                             (where {:email_address email
                                     :user_statuses_id 1})))]
-    (if (= (ecp/hash pwd) (:password user))
-      [true (dissoc user :password)]
-      [false {:message "Invalid username or password."}])))
+    (when (= (ecp/hash pwd) (:password user))
+      (dissoc user :password))))
 
 (defn create-token
   "ユーザーにセッショントークンを払い出す"

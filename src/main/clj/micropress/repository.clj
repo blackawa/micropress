@@ -115,3 +115,7 @@
 (defn find-body-type-by-id
   [id]
   (first (select e/body-types (where {:id id}))))
+
+(defn find-tag-by-id
+  [id]
+  (first (select e/tags (where {:id id}))))

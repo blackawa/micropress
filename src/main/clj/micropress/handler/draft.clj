@@ -10,10 +10,10 @@
         params (-> (:params req)
                    (select-keys [:title :content :thumbnail-url :body-type :tags])
                    (assoc :user-id user-id))
-        [ok? msg] (vd/validate-save params)]
+        {:keys [ok? messages]} (vd/validate-save params)]
     (if ok?
       (d/save-draft params)
-      (res/bad-request msg))))
+      (res/bad-request messages))))
 
 (defroutes routes
   (context "/draft" _

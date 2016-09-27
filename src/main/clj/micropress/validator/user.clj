@@ -7,55 +7,51 @@
             [schema.core :as s]))
 
 (defn valid-username?
-  [username]
-  (let [[un-str-type? _] (v/validate v/username username)
+  [username target]
+  (let [un-str-type? (v/validate v/username username target)
         un-length-ok? (< (count username) 128)
-        ok? (and un-str-type? un-length-ok?)]
-    [ok? {:msg (when (not ok?) "Username should be less than 128, and can contain a-z, A-Z, 0-9, '-' and '_'.") :target username}]))
+        ok? (and (:ok? un-str-type?) un-length-ok?)]
+    (v/->result ok? (when (not ok?) "Username should be less than 128, and can contain a-z, A-Z, 0-9, '-' and '_'.") target)))
 
 (defn valid-nickname?
-  [nickname]
+  [nickname target]
   (let [ok? (and (< 0 (count nickname)) (< (count nickname) 128))]
-    [ok? {:msg (when (not ok?) "Nickname should have 1 - 128 characters.") :target nickname}]))
+    (v/->result ok? (when (not ok?) "Nickname should have 1 - 128 characters.") target)))
 
 (defn valid-password?
-  [password]
+  [password target]
   (let [pwd-length-ok? (and (< 7 (count password)) (< (count password) 128))
-        [pwd-str-type? _] (v/validate v/password password)
-        ok? (and pwd-length-ok? pwd-str-type?)]
-    [ok? {:msg (when (not ok?) "Password should have 8 - 128 characters.") :target password}]))
+        pwd-str-type? (v/validate v/password password target)
+        ok? (and pwd-length-ok? (:ok? pwd-str-type?))]
+    (v/->result ok? (when (not ok?) "Password should have 8 - 128 characters.") target)))
 
 (defn valid-email?
-  [email]
-  (v/validate v/email-format email "Invalid Email Address."))
+  [email target]
+  (v/validate v/email-format email target "Invalid Email Address."))
 
 (defn valid-user-status?
-  [user-status-id]
-  ;; todo implemnt me
-  (if-let [ok? (not (empty? (r/find-user-status-by-id user-status-id)))]
-    [true {:msg nil :target user-status-id}]
-    [false {:msg "Invalid user status." :target user-status-id}]))
+  [user-status-id target]
+  (let [ok? (not (empty? (r/find-user-status-by-id user-status-id)))]
+    (v/->result ok? (when (not ok?) "Invalid user status.") target)))
 
 (defn valid-user-id?
-  [user-id]
-  (if-let [ok? (not (empty? (r/find-user user-id)))]
-    [true {:msg nil :target user-id}]
-    [false {:msg "Invalid user id." :target user-id}]))
+  [user-id target]
+  (let [ok? (not (empty? (r/find-user user-id)))]
+    (v/->result ok? (when (not ok?) "Invalid user id.") target)))
 
 (defn is-active-user?
-  [user-id]
-  (if-let [ok? (not (empty? (r/find-active-user user-id)))]
-    [true {:msg nil :target user-id}]
-    [false {:msg "Invalid user id." :target user-id}]))
+  [user-id target]
+  (let [ok? (not (empty? (r/find-active-user user-id)))]
+    (v/->result ok? (when (not ok?) "Invalid user id.") target)))
 
 (defn validate-update
   [{:keys [user-id username nickname password email image-url user-status-id auth]}]
   (v/aggregate
-   (valid-user-id? user-id)
-   (valid-username? username)
-   (valid-nickname? nickname)
-   (valid-password? password)
-   (valid-email? email)
+   (valid-user-id? user-id :user-id)
+   (valid-username? username :username)
+   (valid-nickname? nickname :nickname)
+   (valid-password? password :password)
+   (valid-email? email :email)
    ;; todo implement validation for image-url
-   (valid-user-status? user-status-id)
-   (va/valid-auth? auth)))
+   (valid-user-status? user-status-id :user-status-id)
+   (va/valid-auth? auth :auth)))
