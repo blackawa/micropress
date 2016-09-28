@@ -1,5 +1,6 @@
 (ns micropress.validator.draft
-  (:require [micropress.repository :as r]
+  (:require [micropress.repository.body-type :as body-type]
+            [micropress.repository.tag :as tag]
             [micropress.util.validator :as v]
             [micropress.validator.user :as vu]
             [schema.core :as s]))
@@ -24,7 +25,7 @@
 
 (defn valid-body-type?
   [id target]
-  (let [ok? (not (nil? (r/find-body-type-by-id id)))]
+  (let [ok? (not (nil? (body-type/find-by-id id)))]
     (v/->result ok? (when (not ok?) "Invalid body type.") target)))
 
 (defn- valid-new-tag?
@@ -39,7 +40,7 @@
 (defn- valid-existing-tag?
   "Input: tag / Output: bool"
   [tag target]
-  (let [ok? (not (nil? (r/find-tag-by-id (:id tag))))]
+  (let [ok? (not (nil? (tag/find-by-id (:id tag))))]
     (v/->result ok? (when (not ok?) "Invalid tag") target)))
 
 (defn valid-tags?

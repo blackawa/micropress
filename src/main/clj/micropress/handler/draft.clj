@@ -12,7 +12,8 @@
                    (assoc :user-id user-id))
         {:keys [ok? messages]} (vd/validate-save params)]
     (if ok?
-      (d/save-draft params)
+      (do (d/save-draft params)
+          (res/created "" {}))
       (res/bad-request messages))))
 
 (defroutes routes

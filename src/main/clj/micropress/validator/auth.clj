@@ -1,5 +1,5 @@
 (ns micropress.validator.auth
-  (:require [micropress.repository :as r]
+  (:require [micropress.repository.auth :as auth]
             [micropress.util.validator :as v]
             [schema.core :as s]))
 
@@ -9,6 +9,6 @@
   "権限IDが正しいか調べる"
   [auth target]
   (let [ok? (->> auth
-                 (map #(not (nil? (r/find-auth-by-id %))))
+                 (map #(not (nil? (auth/find-by-id %))))
                  (reduce (fn [b1 b2] (and b1 b2))))]
     (v/->result ok? (when (not ok?) "Contains invalid auth.") target)))

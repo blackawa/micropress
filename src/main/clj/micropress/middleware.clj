@@ -101,5 +101,5 @@
   [handler]
   (fn [req]
     (try (handler req)
-         (catch Exception e (do (log/error (clojure.string/join "\n        at " (map str (.getStackTrace e))))
+         (catch Exception e (do (log/error (str/join "\n        at " (map str (.getStackTrace e))))
                                 (internal-server-error "Internal Server Error."))))))

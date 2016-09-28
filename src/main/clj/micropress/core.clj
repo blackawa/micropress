@@ -1,7 +1,6 @@
 (ns micropress.core
   (:require [compojure.core :refer [defroutes routes context GET wrap-routes]]
             [compojure.route :as route]
-            [hiccup.core :as hc]
             [ring.adapter.jetty :as server]
             [ring.middleware.edn :refer [wrap-edn-params]]
             [micropress.handler.auth :as auth]

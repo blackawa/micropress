@@ -1,17 +1,13 @@
 (ns micropress.service.auth
   (:require [clj-time.core :as t]
-            [korma.core :refer [select fields where]]
-            [micropress.entity :as e]
-            [micropress.repository :as repo]
+            [micropress.repository.session :as s]
+            [micropress.repository.user :as user]
             [micropress.util.encrypt :as ecp]))
 
 (defn find-user
   "メアドとパスワードからユーザーを探す"
   [email pwd]
-  (let [user (first (select e/users
-                            (fields :id :email_address :password)
-                            (where {:email_address email
-                                    :user_statuses_id 1})))]
+  (let [user (user/find-active-by-email email)]
     (when (= (ecp/hash pwd) (:password user))
       (dissoc user :password))))
 
@@ -23,7 +19,7 @@
 (defn validate-token
   "トークンが有効ならtrueを返却する"
   [token]
-  (->> (repo/find-session token)
+  (->> (s/find-by-token token)
        (filter #(and (t/after? (:expire_time %) (t/now))
                      (pos? (t/in-seconds (t/interval (t/now) (:expire_time %))))))
        empty?

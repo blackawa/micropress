@@ -1,11 +1,7 @@
 (ns micropress.validator.join
-  (:require [clj-time.core :as t]
-            [micropress.repository :as r]
-            [micropress.service.invite :as invite]
-            [micropress.util.validator :as v]
+  (:require [micropress.util.validator :as v]
             [micropress.validator.invite :as vi]
-            [micropress.validator.user :as vu]
-            [schema.core :as s]))
+            [micropress.validator.user :as vu]))
 
 (defn validate-acception
   [{:keys [token username nickname password]}]

@@ -1,6 +1,5 @@
 (ns micropress.handler.invite
   (:require [compojure.core :refer [defroutes context GET POST DELETE]]
-            [compojure.route :as route]
             [micropress.service.invite :as i]
             [micropress.util.response :as res]
             [micropress.validator.invite :as vi]))

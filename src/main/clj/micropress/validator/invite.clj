@@ -1,6 +1,7 @@
 (ns micropress.validator.invite
   (:require [clj-time.core :as t]
-            [micropress.repository :as r]
+            [micropress.repository.invitee :as invitee]
+            [micropress.repository.user :as user]
             [micropress.service.invite :as invite]
             [micropress.util.validator :as v]
             [micropress.validator.auth :as va]
@@ -12,17 +13,17 @@
 (defn- isnt-he-user?
   "すでにユーザーでないかを調べる"
   [email target]
-  (let [ok? (empty? (r/find-user-by-email email))]
+  (let [ok? (empty? (user/find-by-email email))]
     (v/->result ok? (when (not ok?) (format "%s is already used." email)) target)))
 
 (defn valid-invitee-id?
   [invitee-id target]
-  (let [ok? (not (nil? (r/find-invitee-by-id invitee-id)))]
+  (let [ok? (not (nil? (invitee/find-by-id invitee-id)))]
     (v/->result ok? (when (not ok?) "Invalid invitation id.") target)))
 
 (defn valid-invitee-token?
   [token target]
-  (let [ok? (not (nil? (->> (r/find-invitee-by-token token)
+  (let [ok? (not (nil? (->> (invitee/find-by-token token)
                             (filter #(t/before? (t/now) (:expire_time %)))
                             first)))]
     (v/->result ok? (when (not ok?) "Invalid token.") target)))

@@ -1,6 +1,7 @@
 (ns micropress.validator.user
   (:require [clj-time.core :as t]
-            [micropress.repository :as r]
+            [micropress.repository.user :as user]
+            [micropress.repository.user-status :as user-status]
             [micropress.service.invite :as invite]
             [micropress.util.validator :as v]
             [micropress.validator.auth :as va]
@@ -31,17 +32,17 @@
 
 (defn valid-user-status?
   [user-status-id target]
-  (let [ok? (not (empty? (r/find-user-status-by-id user-status-id)))]
+  (let [ok? (not (empty? (user-status/find-by-id user-status-id)))]
     (v/->result ok? (when (not ok?) "Invalid user status.") target)))
 
 (defn valid-user-id?
   [user-id target]
-  (let [ok? (not (empty? (r/find-user user-id)))]
+  (let [ok? (not (empty? (user/find-by-id user-id)))]
     (v/->result ok? (when (not ok?) "Invalid user id.") target)))
 
 (defn is-active-user?
   [user-id target]
-  (let [ok? (not (empty? (r/find-active-user user-id)))]
+  (let [ok? (not (empty? (user/find-active user-id)))]
     (v/->result ok? (when (not ok?) "Invalid user id.") target)))
 
 (defn validate-update

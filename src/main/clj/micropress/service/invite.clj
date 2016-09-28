@@ -1,7 +1,7 @@
 (ns micropress.service.invite
   (:require [clj-time.core :as c]
             [clj-time.format :as f]
-            [micropress.repository :as r]
+            [micropress.repository.invitee :as invitee]
             [micropress.util.encrypt :as ecp]
             [micropress.util.time :as t]))
 
@@ -10,7 +10,7 @@
    ユーザーの招待情報を登録する."
   [email auth]
   (let [token (ecp/create-token-by-obj email)]
-    (r/insert-invitee token email auth)))
+    (invitee/insert-invitee token email auth)))
 
 (defn send-invite-mail
   "メンバー招待のメールを送信する."
@@ -26,16 +26,16 @@
 (defn view-invitees
   "招待一覧を返す"
   []
-  (->> (r/find-all-invitees)
+  (->> (invitee/find-all)
        (map #(assoc % :expire_time (t/time->string (:expire_time %))))))
 
 (defn view-invitee
   [invitee-token]
-  (->> (r/find-invitee-by-token invitee-token)
+  (->> (invitee/find-by-token invitee-token)
        (filter #(c/before? (c/now) (:expire_time %)))
        (map #(assoc % :expire_time (t/time->string (:expire_time %))))
        first))
 
 (defn delete-invitation
   [invitee-id]
-  (r/delete-invitee invitee-id))
+  (invitee/delete-by-id invitee-id))
