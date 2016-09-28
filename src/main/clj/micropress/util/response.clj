@@ -44,3 +44,9 @@
    (not-found {}))
   ([body]
    (res/not-found body)))
+
+(defn internal-server-error
+  [body]
+  {:status 500
+   :headers {}
+   :body body})
