@@ -16,6 +16,10 @@
                  [mysql/mysql-connector-java "6.0.3"]
                  [korma "0.4.3"]
                  [ragtime "0.6.0"]
+                 ;; logging
+                 [org.clojure/tools.logging "0.3.1"]
+                 [org.slf4j/slf4j-api "1.7.0"]
+                 [ch.qos.logback/logback-classic "1.1.3"]
                  ;; other libraries
                  [buddy "1.0.0"]
                  [clj-time "0.12.0"]
