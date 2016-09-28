@@ -1,0 +1,12 @@
+<configuration>
+  <appender name= "STDOUT" class= "ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+<!--      <pattern>%date [%level] [user-id=%3X{user-id}] [%-20X{request-id}] %msg%n</pattern>  -->
+      <pattern>%d [%-20X{request-id}] %-5level %logger - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level= "info">
+    <appender-ref ref= "STDOUT" />
+  </root>
+</configuration>

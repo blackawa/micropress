@@ -8,7 +8,8 @@
             [micropress.handler.invite :as invite]
             [micropress.handler.join :as join]
             [micropress.handler.user :as user]
-            [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization]]))
+            [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization
+                                           wrap-log-mdc wrap-log-response wrap-exception]]))
 
 (defonce server (atom nil))
 
@@ -25,18 +26,24 @@
 
 (def app
   ;; routes which do not require authorization token.
-  (routes (-> public-api-routes
+  (routes (-> secure-api-routes
               ;; middleware for request
-              (wrap-routes wrap-edn-params)
-              ;; middleware for response
-              (wrap-routes wrap-edn-response))
-          (-> secure-api-routes
-              ;; middleware for request
+              (wrap-routes wrap-log-mdc)
               (wrap-routes wrap-authentication)
               (wrap-routes wrap-authorization)
               (wrap-routes wrap-edn-params)
               ;; middleware for response
-              (wrap-routes wrap-edn-response))
+              (wrap-routes wrap-edn-response)
+              (wrap-routes wrap-exception)
+              (wrap-routes wrap-log-response))
+          (-> public-api-routes
+              ;; middleware for request
+              (wrap-routes wrap-log-mdc)
+              (wrap-routes wrap-edn-params)
+              ;; middleware for response
+              (wrap-routes wrap-edn-response)
+              (wrap-routes wrap-exception)
+              (wrap-routes wrap-log-response))
           (route/not-found "404 Not found.")))
 
 (defn run []

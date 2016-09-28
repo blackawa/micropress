@@ -1,10 +1,12 @@
 (ns micropress.middleware
   (:require [clojure.string :as str]
+            [clojure.tools.logging :as log]
             [ring.util.response :as res]
             [micropress.const.authorization :as const]
             [micropress.service.auth :as auth]
             [micropress.service.authorization :as authorization]
-            [micropress.util.response :refer [unauthorized forbidden]]))
+            [micropress.util.response :refer [unauthorized forbidden internal-server-error]])
+  (:import [org.slf4j MDC]))
 
 (defn- accept-edn? [req]
   (if-let [^String type (-> req :headers (get "accept"))]
@@ -70,3 +72,25 @@
     (if (valid-authorization? (get-authorization-token req) (:uri req) (:request-method req))
       (handler req)
       (forbidden {}))))
+
+(defn wrap-log-mdc
+  [handler]
+  (fn [req]
+    (let [request-id (str "req-" (.getId (Thread/currentThread)) "-" (System/currentTimeMillis))]
+      (MDC/put "request-id" request-id)
+      (log/info (:uri req))
+      (handler req))))
+
+(defn wrap-log-response
+  [handler]
+  (fn [req]
+    (let [res (handler req)]
+      (log/info (str "response status " (:status res)))
+      res)))
+
+(defn wrap-exception
+  [handler]
+  (fn [req]
+    (try (handler req)
+         (catch Exception e (do (log/error (clojure.string/join "\n        at " (map str (.getStackTrace e))))
+                                (internal-server-error "Internal Server Error."))))))
