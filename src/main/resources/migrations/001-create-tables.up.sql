@@ -53,7 +53,7 @@ foreign key (authorities_id) references authorities(id)
 create table user_histories (
 id int auto_increment not null,
 user_id int not null,
-updated_time timestamp not null,
+updated_at timestamp not null,
 username varchar(128) not null,
 nickname varchar(128) not null,
 password varchar(128) not null,
@@ -61,7 +61,7 @@ email_address varchar(256) not null,
 image_url varchar(256),
 user_statuses_id int not null,
 foreign key (user_statuses_id) references user_statuses(id),
-primary key (id, user_id, updated_time)
+primary key (id, user_id, updated_at)
 );
 --;;
 create table events (
@@ -93,7 +93,6 @@ article_statuses_id int not null,
 users_id int not null,
 title varchar(256) not null,
 thumbnail_url varchar(256),
-description text not null,
 body_type int not null,
 body text not null,
 foreign key (article_statuses_id) references article_statuses(id),
@@ -107,11 +106,10 @@ article_statuses_id int not null,
 users_id int not null,
 title varchar(256) not null,
 thumbnail_url varchar(256),
-description text not null,
 body_type int not null,
 body text not null,
-updated_time timestamp not null,
-primary key (id, articles_id, updated_time),
+updated_at timestamp not null,
+primary key (id, articles_id, updated_at),
 foreign key (articles_id) references articles(id),
 foreign key (article_statuses_id) references article_statuses(id),
 foreign key (users_id) references users(id)

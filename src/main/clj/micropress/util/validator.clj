@@ -14,8 +14,7 @@
   {:ok? result :messages [{:target target :message msg}]})
 
 (defn validate
-  "バリデーションを実行する.
-   結果を例外ではなく、[bool {:msg msg :target target}]の形式で返却する."
+  "バリデーションを実行する."
   ([validator target target-nm]
    (validate validator target target-nm nil))
   ([validator target target-nm err-msg]
@@ -30,6 +29,6 @@
   (reduce
    (fn [r1 r2]
      {:ok? (and (:ok? r1) (:ok? r2))
-      :messages (concat (when (:ok? r1) (:messages r1))
-                        (when (:ok? r2) (:messages r2)))})
+      :messages (concat (when (not (:ok? r1)) (:messages r1))
+                        (when (not (:ok? r2)) (:messages r2)))})
    results))

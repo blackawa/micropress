@@ -7,21 +7,21 @@
 
 (defn valid-title?
   [title target]
-  (let [{:keys [result]} (v/validate s/Str title target)
+  (let [result (v/validate s/Str title target)
         title-length-ok? (and (< 0 (count title)) (< (count title) 256))
-        ok? (and result title-length-ok?)]
+        ok? (and (:ok? result) title-length-ok?)]
     (v/->result ok? (when (not ok?) "Title should have 1 - 128 characters.") target)))
 
-(defn valid-description?
-  [description target]
-  (let [{:keys [result]} (v/validate s/Str description target)
-        desc-length-ok? (< 0 (count description))
-        ok? (and result desc-length-ok?)]
-    (v/->result ok? (when (not ok?) "Title should have more than 1 characters.") target)))
+(defn valid-body?
+  [body target]
+  (let [result (v/validate s/Str body target)
+        body-length-ok? (< 0 (count body))
+        ok? (and (:ok? result) body-length-ok?)]
+    (v/->result ok? (when (not ok?) "Body should have more than 1 characters.") target)))
 
 (defn valid-thumbnail-url?
-  [thumbnail-url]
-  (v/->result true nil :thumbnail-url)) ;; todo implement me...
+  [thumbnail-url target]
+  (v/->result true nil target)) ;; todo implement me...
 
 (defn valid-body-type?
   [id target]
@@ -32,9 +32,9 @@
   "Input: tag / Output: bool"
   [tag target]
   (let [keyword (:keyword tag)
-        [tag-str? _] (v/validate s/Str tag target)
-        tag-length-ok? (and (< 0 (count tag)) (< (count tag) 128))
-        ok? (and tag-str? tag-length-ok?)]
+        result (v/validate s/Str keyword target)
+        tag-length-ok? (and (< 0 (count keyword)) (< (count keyword) 128))
+        ok? (and (:ok? result) tag-length-ok?)]
     (v/->result ok? (when (not ok?) "Invalid new tag") target)))
 
 (defn- valid-existing-tag?
@@ -54,11 +54,11 @@
        (apply v/aggregate)))
 
 (defn validate-save
-  [{:keys [title description thumbnail-url body-type tags user-id]}]
+  [{:keys [title body thumbnail-url body-type tags user-id]}]
   (v/aggregate
    (valid-title? title :title)
-   (valid-description? description :description)
+   (valid-body? body :body)
    (valid-thumbnail-url? thumbnail-url :thumbnail-url)
    (valid-body-type? body-type :body-type)
-   (valid-tags? :tags)
+   (valid-tags? tags :tags)
    (vu/is-active-user? user-id :user-id)))

@@ -37,7 +37,9 @@
   (belongs-to article-statuses)
   (belongs-to users))
 (defentity tags
-  (many-to-many articles :articles_tag))
+  (many-to-many articles :article_tags))
+(defentity article-tags
+  (table :article_tags))
 (defentity article-histories
   (table :article_histories)
   (many-to-many tags :articles_tag)

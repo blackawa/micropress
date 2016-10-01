@@ -8,7 +8,7 @@
   [req]
   (let [user-id (get-in req [:context :user-id])
         params (-> (:params req)
-                   (select-keys [:title :content :thumbnail-url :body-type :tags])
+                   (select-keys [:title :body :thumbnail-url :body-type :tags])
                    (assoc :user-id user-id))
         {:keys [ok? messages]} (vd/validate-save params)]
     (if ok?

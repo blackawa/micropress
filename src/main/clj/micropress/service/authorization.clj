@@ -3,4 +3,4 @@
 
 (defn find-by-token
   [token]
-  (:authorities session/find-by-token-with-user))
+  (:authorities (session/find-by-token-with-user token)))
