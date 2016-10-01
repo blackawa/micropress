@@ -36,5 +36,13 @@
 (defentity articles
   (belongs-to article-statuses)
   (belongs-to users))
-(defentity article_status_histories
-  (pk [:id :article_id :updated_time]))
+(defentity tags
+  (many-to-many articles :article_tags))
+(defentity article-tags
+  (table :article_tags))
+(defentity article-histories
+  (table :article_histories)
+  (many-to-many tags :articles_tag)
+  (pk [:id :articles_id :updated_time]))
+(defentity articles-tag
+  (table :articles_tag))

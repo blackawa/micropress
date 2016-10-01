@@ -1,9 +1,6 @@
 (ns micropress.service.authorization
-  (:require [korma.core :refer [select where with fields]]
-            [micropress.entity :as e]))
+  (:require [micropress.repository.session :as session]))
 
 (defn find-by-token
   [token]
-  (:authorities (first (select e/user-sessions
-                               (with e/users (with e/authorities))
-                               (where {:token token})))))
+  (:authorities (session/find-by-token-with-user token)))

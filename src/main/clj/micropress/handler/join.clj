@@ -16,10 +16,10 @@
 (defn- accept-invitation
   [req]
   (let [params (:params req)
-        [ok? msg] (v/validate-acception params)]
+        {:keys [ok? messages]} (v/validate-acception params)]
     (if ok?
       (res/ok (j/accpet-invitation params))
-      (res/bad-request msg))))
+      (res/bad-request messages))))
 
 (defroutes routes
   (context "/invitation" _

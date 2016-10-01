@@ -3,6 +3,7 @@
             [clojure.tools.logging :as log]
             [ring.util.response :as res]
             [micropress.const.authorization :as const]
+            [micropress.repository.session :as session]
             [micropress.service.auth :as auth]
             [micropress.service.authorization :as authorization]
             [micropress.util.response :refer [unauthorized forbidden internal-server-error]])
@@ -45,7 +46,19 @@
     (let [token (get-authorization-token req)]
       (if (auth/validate-token token)
         (handler req)
-        (unauthorized {"Authorization" (format "Bearer error=invalid token.[%s]" token)})))))
+        (do (log/info "response status 401")
+            (unauthorized {"Authorization" (format "Bearer error=invalid token.[%s]" token)}))))))
+
+(defn wrap-context
+  "ユーザーがログインしていればその情報をリクエストに付加して
+   つぎのhandlerに渡す"
+  [handler]
+  (fn [req]
+    (if-let [user-id (-> (session/find-by-token (get-authorization-token req))
+                         first
+                         :users_id)]
+      (handler (assoc req :context {:user-id user-id}))
+      (handler req))))
 
 (defn- valid-authorization?
   "ユーザーとその権限を引いて、ユーザーがそのパスとHTTPメソッドを実行可能かチェックする.
@@ -71,14 +84,15 @@
   (fn [req]
     (if (valid-authorization? (get-authorization-token req) (:uri req) (:request-method req))
       (handler req)
-      (forbidden {}))))
+      (do (log/info "response status 403")
+          (forbidden {})))))
 
 (defn wrap-log-mdc
   [handler]
   (fn [req]
     (let [request-id (str "req-" (.getId (Thread/currentThread)) "-" (System/currentTimeMillis))]
       (MDC/put "request-id" request-id)
-      (log/info (:uri req))
+      (log/info (str (.toUpperCase (apply str (rest (str :post)))) " " (:uri req)))
       (handler req))))
 
 (defn wrap-log-response
@@ -89,8 +103,9 @@
       res)))
 
 (defn wrap-exception
+  "handle unexpected server error."
   [handler]
   (fn [req]
     (try (handler req)
-         (catch Exception e (do (log/error (clojure.string/join "\n        at " (map str (.getStackTrace e))))
+         (catch Exception e (do (log/error (str/join "\n        at " (map str (.getStackTrace e))))
                                 (internal-server-error "Internal Server Error."))))))
