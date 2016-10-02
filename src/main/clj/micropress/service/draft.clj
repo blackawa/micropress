@@ -16,3 +16,7 @@
           (tags/insert-tags)
           (concat (map #(:id %) existing-tags))
           (article-tag/insert-article-tags article-id))))
+
+(defn submit-draft
+  [article-id]
+  (article/submit-draft article-id))

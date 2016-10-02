@@ -10,8 +10,10 @@
   "入力チェック結果生成の標準.
    入力チェック結果、エラーメッセージ、チェックしたプロパティ名を受け取って
    入力チェック結果のmapを生成する."
-  [result msg target]
-  {:ok? result :messages [{:target target :message msg}]})
+  ([target]
+   (->result true nil target))
+  ([result msg target]
+   {:ok? result :messages [{:target target :message msg}]}))
 
 (defn validate
   "バリデーションを実行する."
