@@ -1,5 +1,6 @@
 (ns micropress.validator.draft
-  (:require [micropress.repository.body-type :as body-type]
+  (:require [micropress.repository.article :as article]
+            [micropress.repository.body-type :as body-type]
             [micropress.repository.tag :as tag]
             [micropress.util.validator :as v]
             [micropress.validator.user :as vu]
@@ -53,6 +54,14 @@
                    :else (v/->result false "Invalid tag format" target)))
        (apply v/aggregate)))
 
+(defn draft-exist?
+  [article-id user-id target]
+  (let [article (article/find-by-id article-id)]
+    (or (when (nil? article) (v/->result false "Article does not exist" target))
+        (when (not (= user-id (:users_id article))) (v/->result false "Article is not exist" target))
+        (when (not (= 1 (:article_statuses_id article))) (v/->result false "Article is not draft" target))
+        (v/->result target))))
+
 (defn validate-save
   [{:keys [title body thumbnail-url body-type tags user-id]}]
   (v/aggregate
@@ -62,3 +71,8 @@
    (valid-body-type? body-type :body-type)
    (valid-tags? tags :tags)
    (vu/is-active-user? user-id :user-id)))
+
+(defn validate-submit
+  [article-id user-id]
+  (v/aggregate
+   (draft-exist? article-id user-id :article-id)))
