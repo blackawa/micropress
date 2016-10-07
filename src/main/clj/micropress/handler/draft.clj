@@ -27,7 +27,20 @@
           (res/created "" {}))
       (res/bad-request messages))))
 
+(defn- update-draft
+  [req]
+  (let [user-id (context/get-user-id req)
+        params (-> (:params req)
+                   (select-keys [:article-id :title :body :thumbnail-url :body-type :tags :submit?])
+                   (assoc :user-id user-id))
+        {:keys [ok? messages]} (vd/validate-update params)]
+    (if ok?
+      (do (d/update-draft params)
+          (res/ok))
+      (res/bad-request messages))))
+
 (defroutes routes
   (context "/draft" _
            (POST "/" _ save-draft)
-           (POST "/:article-id" _ submit-draft)))
+           (POST "/:article-id" _ submit-draft)
+           (PUT "/:article-id" _ update-draft)))

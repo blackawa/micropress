@@ -72,7 +72,24 @@
    (valid-tags? tags :tags)
    (vu/is-active-user? user-id :user-id)))
 
+(defn valid-submit-flag?
+  [submit? target]
+  (v/validate s/Bool submit? target "Invalid submit flag"))
+
 (defn validate-submit
   [article-id user-id]
   (v/aggregate
-   (draft-exist? article-id user-id :article-id)))
+   (draft-exist? article-id user-id :article-id)
+   (vu/is-active-user? user-id :user-id)))
+
+(defn validate-update
+  [{:keys [article-id title body thumbnail-url body-type tags submit? user-id]}]
+  (v/aggregate
+   (draft-exist? article-id user-id :article-id)
+   (valid-title? title :title)
+   (valid-body? body :body)
+   (valid-thumbnail-url? thumbnail-url :thumbnail-url)
+   (valid-body-type? body-type :body-type)
+   (valid-tags? tags :tags)
+   (vu/is-active-user? user-id :user-id)
+   (valid-submit-flag? submit? :submit?)))
