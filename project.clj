@@ -33,5 +33,5 @@
   :repl-options {:port 51423}
 
   :profiles {:dev {:dependencies [[alembic "0.3.2"]]
-                   :source-paths ["src/main/clj" "dev"]
+                   :source-paths ["src/main/clj" "src/dev"]
                    :repl-options {:init (set! *print-length* 50)}}})
