@@ -22,9 +22,10 @@
                  [ch.qos.logback/logback-classic "1.1.3"]
                  ;; other libraries
                  [buddy "1.0.0"]
+                 [environ "1.1.0"]
                  [clj-time "0.12.0"]
                  [prismatic/schema "1.1.3"]]
-
+  :plugins [[lein-environ "1.1.0"]]
   :source-paths ["src/main/clj"]
   :test-paths ["src/test/clj"]
   :resource-paths ["src/main/resources"]
@@ -34,4 +35,9 @@
 
   :profiles {:dev {:dependencies [[alembic "0.3.2"]]
                    :source-paths ["src/main/clj" "src/dev"]
-                   :repl-options {:init (set! *print-length* 50)}}})
+                   :repl-options {:init (set! *print-length* 50)}
+                   :env {:host "127.0.0.1"
+                         :port 3306
+                         :db "micropress"
+                         :username "micropress"
+                         :password "p@ssw0rd"}}})

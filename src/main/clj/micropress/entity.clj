@@ -1,12 +1,13 @@
 (ns micropress.entity
-  (:require [korma.core :refer [defentity table belongs-to many-to-many pk]]
+  (:require [environ.core :refer [env]]
+            [korma.core :refer [defentity table belongs-to many-to-many pk]]
             [korma.db :refer [defdb mysql]]))
 
-(defdb db (mysql {:host "127.0.0.1"
-                  :port 3306
-                  :db "micropress"
-                  :user "micropress"
-                  :password "p@ssw0rd"}))
+(defdb db (mysql {:host (env :host)
+                  :port (env :port)
+                  :db (env :db)
+                  :user (env :username)
+                  :password (env :password)}))
 
 (defentity user-statuses
   (table :user_statuses))
