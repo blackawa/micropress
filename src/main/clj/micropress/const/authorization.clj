@@ -10,4 +10,5 @@
    {:request-method :put    :uri #"^/api/user/.*$"           :auth [1 2 3]}
    {:request-method :post   :uri "/api/draft"                :auth [    3]}
    {:request-method :post   :uri #"^/api/draft/.$"           :auth [    3]}
-   {:request-method :put    :uri #"^/api/draft/.$"           :auth [    3]}])
+   {:request-method :put    :uri #"^/api/draft/.$"           :auth [    3]}
+   {:request-method :delete :uri #"^/api/draft/.$"           :auth [    3]}])

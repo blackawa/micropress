@@ -30,3 +30,7 @@
          (tag/insert-tags)
          (concat (map #(:id %) existing-tags))
          (article-tag/insert-article-tags article-id))))
+
+(defn delete-draft
+  [article-id]
+  (article/delete-article article-id))
