@@ -25,3 +25,14 @@
   (update e/articles
           (set-fields {:article_statuses_id 2})
           (where {:id article-id})))
+
+(defn update-draft
+  [article-id title body thumbnail-url body-type submit? user-id]
+  (update e/articles
+          (set-fields {:title title
+                       :body body
+                       :thumbnail_url thumbnail-url
+                       :body_type body-type
+                       :users_id user-id
+                       :article_statuses_id (if submit? 2 1)})
+          (where {:id article-id})))
