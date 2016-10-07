@@ -62,6 +62,10 @@
         (when (not (= 1 (:article_statuses_id article))) (v/->result false "Article is not draft" target))
         (v/->result target))))
 
+(defn valid-submit-flag?
+  [submit? target]
+  (v/validate s/Bool submit? target "Invalid submit flag"))
+
 (defn validate-save
   [{:keys [title body thumbnail-url body-type tags user-id]}]
   (v/aggregate
@@ -71,10 +75,6 @@
    (valid-body-type? body-type :body-type)
    (valid-tags? tags :tags)
    (vu/is-active-user? user-id :user-id)))
-
-(defn valid-submit-flag?
-  [submit? target]
-  (v/validate s/Bool submit? target "Invalid submit flag"))
 
 (defn validate-submit
   [article-id user-id]
@@ -93,3 +93,8 @@
    (valid-tags? tags :tags)
    (vu/is-active-user? user-id :user-id)
    (valid-submit-flag? submit? :submit?)))
+
+(defn validate-delete
+  [article-id user-id]
+  (v/aggregate
+   (draft-exist? article-id user-id :article-id)))

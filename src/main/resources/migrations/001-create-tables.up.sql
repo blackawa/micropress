@@ -32,7 +32,7 @@ token varchar(64) not null primary key,
 users_id int not null,
 content blob,
 expire_time timestamp not null,
-foreign key (users_id) references users(id)
+foreign key (users_id) references users(id) on delete cascade
 );
 --;;
 create table invitees (
@@ -52,7 +52,7 @@ foreign key (authorities_id) references authorities(id)
 --;;
 create table user_histories (
 id int auto_increment not null,
-user_id int not null,
+users_id int not null,
 updated_at timestamp not null,
 username varchar(128) not null,
 nickname varchar(128) not null,
@@ -60,8 +60,9 @@ password varchar(128) not null,
 email_address varchar(256) not null,
 image_url varchar(256),
 user_statuses_id int not null,
+foreign key (users_id) references users(id) on delete cascade,
 foreign key (user_statuses_id) references user_statuses(id),
-primary key (id, user_id, updated_at)
+primary key (id, users_id, updated_at)
 );
 --;;
 create table events (
@@ -124,6 +125,6 @@ create table article_tags (
 articles_id int not null,
 tags_id int not null,
 primary key (articles_id, tags_id),
-foreign key (articles_id) references articles(id),
-foreign key (tags_id) references tags(id)
+foreign key (articles_id) references articles(id) on delete cascade,
+foreign key (tags_id) references tags(id) on delete cascade
 );

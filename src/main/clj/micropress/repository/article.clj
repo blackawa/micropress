@@ -2,6 +2,7 @@
   (:require [korma.core :refer [insert values
                                 select
                                 update set-fields
+                                delete
                                 where]]
             [micropress.entity :as e]))
 
@@ -36,3 +37,7 @@
                        :users_id user-id
                        :article_statuses_id (if submit? 2 1)})
           (where {:id article-id})))
+
+(defn delete-article
+  [article-id]
+  (delete e/articles (where {:id article-id})))

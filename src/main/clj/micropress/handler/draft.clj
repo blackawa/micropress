@@ -1,5 +1,5 @@
 (ns micropress.handler.draft
-  (:require [compojure.core :refer [defroutes context POST PUT]]
+  (:require [compojure.core :refer [defroutes context POST PUT DELETE]]
             [micropress.service.draft :as d]
             [micropress.util.context :as context]
             [micropress.util.response :as res]
@@ -39,8 +39,19 @@
           (res/ok))
       (res/bad-request messages))))
 
+(defn- delete-draft
+  [req]
+  (let [user-id (context/get-user-id req)
+        article-id (get-in req [:params :article-id])
+        {:keys [ok? messages]} (vd/validate-delete article-id user-id)]
+    (if ok?
+      (do (d/delete-draft article-id)
+          (res/ok))
+      (res/bad-request messages))))
+
 (defroutes routes
   (context "/draft" _
            (POST "/" _ save-draft)
            (POST "/:article-id" _ submit-draft)
-           (PUT "/:article-id" _ update-draft)))
+           (PUT "/:article-id" _ update-draft)
+           (DELETE "/:article-id" _ delete-draft)))
