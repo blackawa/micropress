@@ -3,8 +3,21 @@
                                 select
                                 update set-fields
                                 delete
-                                where]]
+                                where with]]
             [micropress.entity :as e]))
+
+(defn find-draft-by-id
+  [article-id user-id]
+  (first (select e/articles
+                 (with e/article-statuses)
+                 (where {:id article-id
+                         :users_id user-id}))))
+
+(defn find-all-drafts
+  [user-id]
+  (select e/articles
+          (with e/article-statuses)
+          (where {:users_id user-id})))
 
 (defn insert-article
   [title body thumbnail-url body-type user-id]

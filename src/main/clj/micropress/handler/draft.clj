@@ -1,9 +1,25 @@
 (ns micropress.handler.draft
-  (:require [compojure.core :refer [defroutes context POST PUT DELETE]]
+  (:require [compojure.core :refer [defroutes context GET POST PUT DELETE]]
             [micropress.service.draft :as d]
             [micropress.util.context :as context]
             [micropress.util.response :as res]
             [micropress.validator.draft :as vd]))
+
+(defn- view-drafts
+  [req]
+  ;; 自分の「下書き」だけを取得する
+  (let [user-id (context/get-user-id req)]
+    (res/ok (d/find-all user-id))))
+
+(defn- view-draft
+  [req]
+  ;; 自分の「下書き」なら取得する
+  (let [article-id (get-in req [:params :article-id])
+        user-id (context/get-user-id req)
+        {:keys [ok? messages]} (vd/validate-view article-id user-id)]
+    (if ok?
+      (do (res/ok (d/find-by-id article-id user-id)))
+      (res/bad-request messages))))
 
 (defn- save-draft
   [req]
@@ -51,7 +67,9 @@
 
 (defroutes routes
   (context "/draft" _
+           (GET "/" _ view-drafts)
            (POST "/" _ save-draft)
+           (GET "/:article-id" _ view-draft)
            (POST "/:article-id" _ submit-draft)
            (PUT "/:article-id" _ update-draft)
            (DELETE "/:article-id" _ delete-draft)))

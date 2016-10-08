@@ -66,6 +66,11 @@
   [submit? target]
   (v/validate s/Bool submit? target "Invalid submit flag"))
 
+(defn validate-view
+  [article-id user-id]
+  (v/aggregate
+   (draft-exist? article-id user-id :article-id)))
+
 (defn validate-save
   [{:keys [title body thumbnail-url body-type tags user-id]}]
   (v/aggregate
