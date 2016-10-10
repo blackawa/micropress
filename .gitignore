@@ -9,3 +9,4 @@ pom.xml
 .lein-plugins/
 .repl
 .nrepl-port
+.lein-env

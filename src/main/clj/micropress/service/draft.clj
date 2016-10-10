@@ -5,6 +5,14 @@
             [micropress.repository.tag :as tag]
             [micropress.service.tag :as st]))
 
+(defn find-by-id
+  [article-id user-id]
+  (article/find-draft-by-id article-id user-id))
+
+(defn find-all
+  [user-id]
+  (article/find-all-drafts user-id))
+
 (defn save-draft
   [{:keys [title body thumbnail-url body-type tags user-id]}]
   ;; todo トランザクションを開始して、記事の追加とタグの追加を全部終わらせたらコミットする
