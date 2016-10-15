@@ -26,11 +26,15 @@
           (->result false (if (nil? err-msg) (.getMessage e) err-msg) target-nm)))))
 
 (defn aggregate
-  "validate関数の複数の結果をマージして最終的な結果を返却する."
+  "validate関数の複数の結果をマージして最終的な結果を返却する.
+   ただしゴミ情報は省いて結果を判定する."
   [& results]
-  (reduce
-   (fn [r1 r2]
-     {:ok? (and (:ok? r1) (:ok? r2))
-      :messages (concat (when (not (:ok? r1)) (:messages r1))
-                        (when (not (:ok? r2)) (:messages r2)))})
-   results))
+  (->> results
+       (filter #(and (map? %)
+                     (contains? % :ok?)
+                     (contains? % :messages)))
+       (reduce
+        (fn [r1 r2]
+          {:ok? (and (:ok? r1) (:ok? r2))
+           :messages (concat (when (not (:ok? r1)) (:messages r1))
+                             (when (not (:ok? r2)) (:messages r2)))}))))

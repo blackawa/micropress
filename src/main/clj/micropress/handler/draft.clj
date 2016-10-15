@@ -40,7 +40,7 @@
         {:keys [ok? messages]} (vd/validate-submit article-id user-id)]
     (if ok?
       (do (d/submit-draft article-id)
-          (res/created "" {}))
+          (res/ok))
       (res/bad-request messages))))
 
 (defn- update-draft

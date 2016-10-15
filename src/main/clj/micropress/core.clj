@@ -3,11 +3,12 @@
             [compojure.route :as route]
             [ring.adapter.jetty :as server]
             [ring.middleware.edn :refer [wrap-edn-params]]
+            [micropress.handler.article :as article]
             [micropress.handler.auth :as auth]
+            [micropress.handler.draft :as draft]
             [micropress.handler.invite :as invite]
             [micropress.handler.join :as join]
             [micropress.handler.user :as user]
-            [micropress.handler.draft :as draft]
             [micropress.middleware :refer [wrap-edn-response wrap-authentication wrap-authorization
                                            wrap-context wrap-log-mdc wrap-log-response wrap-exception]]))
 
@@ -23,7 +24,8 @@
    (context "/api" _
             invite/routes
             user/routes
-            draft/routes)))
+            draft/routes
+            article/routes)))
 
 (def app
   ;; routes which do not require authorization token.

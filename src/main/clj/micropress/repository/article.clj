@@ -1,9 +1,10 @@
 (ns micropress.repository.article
-  (:require [korma.core :refer [insert values
-                                select
-                                update set-fields
-                                delete
-                                where with]]
+  (:require [clj-time.jdbc]
+            [korma.core :refer [insert values
+                                   select
+                                   update set-fields
+                                   delete
+                                   where with]]
             [micropress.entity :as e]))
 
 (defn find-draft-by-id
@@ -39,6 +40,12 @@
   (update e/articles
           (set-fields {:article_statuses_id 2})
           (where {:id article-id})))
+
+(defn publish-article
+  [article-id publish-at]
+  (update e/articles
+          (set-fields {:article_statuses_id 4
+                       :published_at publish-at})))
 
 (defn update-draft
   [article-id title body thumbnail-url body-type submit? user-id]

@@ -11,7 +11,7 @@
                  [ring "1.5.0"]
                  [fogus/ring-edn "0.3.0"]
                  [compojure "1.5.1"]
-                 ;; databse connection
+                 ;; database connection
                  [org.clojure/java.jdbc "0.6.1"]
                  [mysql/mysql-connector-java "6.0.3"]
                  [korma "0.4.3"]

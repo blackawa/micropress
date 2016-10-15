@@ -55,6 +55,13 @@
        (apply v/aggregate)))
 
 (defn draft-exist?
+  [article-id target]
+  (let [article (article/find-by-id article-id)]
+    (or (when (nil? article) (v/->result false "Article does not exist" target))
+        (when (not (= 1 (:article_statuses_id article))) (v/->result false "Article is not draft" target))
+        (v/->result target))))
+
+(defn your-draft-exist?
   [article-id user-id target]
   (let [article (article/find-by-id article-id)]
     (or (when (nil? article) (v/->result false "Article does not exist" target))
@@ -69,7 +76,7 @@
 (defn validate-view
   [article-id user-id]
   (v/aggregate
-   (draft-exist? article-id user-id :article-id)))
+   (your-draft-exist? article-id user-id :article-id)))
 
 (defn validate-save
   [{:keys [title body thumbnail-url body-type tags user-id]}]
@@ -84,13 +91,13 @@
 (defn validate-submit
   [article-id user-id]
   (v/aggregate
-   (draft-exist? article-id user-id :article-id)
+   (your-draft-exist? article-id user-id :article-id)
    (vu/is-active-user? user-id :user-id)))
 
 (defn validate-update
   [{:keys [article-id title body thumbnail-url body-type tags submit? user-id]}]
   (v/aggregate
-   (draft-exist? article-id user-id :article-id)
+   (your-draft-exist? article-id user-id :article-id)
    (valid-title? title :title)
    (valid-body? body :body)
    (valid-thumbnail-url? thumbnail-url :thumbnail-url)
@@ -102,4 +109,4 @@
 (defn validate-delete
   [article-id user-id]
   (v/aggregate
-   (draft-exist? article-id user-id :article-id)))
+   (your-draft-exist? article-id user-id :article-id)))
