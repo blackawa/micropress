@@ -7,7 +7,8 @@
                   :port (env :port)
                   :db (env :db)
                   :user (env :username)
-                  :password (env :password)}))
+                  :password (env :password)
+                  :useSSL false}))
 
 (defentity user-statuses
   (table :user_statuses))
