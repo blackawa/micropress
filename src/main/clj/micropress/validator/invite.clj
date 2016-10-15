@@ -4,7 +4,6 @@
             [micropress.repository.user :as user]
             [micropress.service.invite :as invite]
             [micropress.util.validator :as v]
-            [micropress.validator.auth :as va]
             [micropress.validator.user :as vu]
             [schema.core :as s]))
 
@@ -34,7 +33,7 @@
    (vu/valid-email? email :email)
    (v/validate auth-format auth :auth "Invalid Authorities.")
    (isnt-he-user? email :email)
-   (va/valid-auth? auth :auth)))
+   (vu/valid-auth? auth :auth)))
 
 (defn validate-invitee-id
   [invitee-id]
