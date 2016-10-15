@@ -4,18 +4,19 @@
                                 delete
                                 update set-fields
                                 where with]]
+            [micropress.constant.code :as c]
             [micropress.entity :as e]))
 
 (defn find-by-email
   [email]
   (select e/users
-          (where {:email_address email :user_statuses_id 1})))
+          (where {:email_address email :user_statuses_id c/user-status-enabled})))
 
 (defn insert-user
   "ユーザー情報と権限を登録する."
   [username nickname password email invitee-id]
   (let [user-id (:generated_key (insert e/users (values {:username username :nickname nickname :password password :email_address email
-                                                         :user_statuses_id 1})))
+                                                         :user_statuses_id c/user-status-enabled})))
         auths (map (fn [m] {:users_id user-id :authorities_id (:authorities_id m)})
                    (select e/invitee-authorities (where {:invitees_id invitee-id})))]
     (insert e/user-authorities (values auths))

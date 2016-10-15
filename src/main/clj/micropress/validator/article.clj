@@ -1,6 +1,7 @@
 (ns micropress.validator.article
   (:require [clj-time.core :as time]
             [clj-time.format :as f]
+            [micropress.constant.code :as c]
             [micropress.repository.article :as article]
             [micropress.validator.draft :as vd]
             [micropress.util.validator :as v]
@@ -11,7 +12,7 @@
   (let [article (article/find-by-id article-id)]
     (or (when (nil? article) (v/->result false "Article does not exist" target))
         ;; TODO: when not submitted, return validation error.
-        (when (not (= 2 (:article_statuses_id article))) (v/->result false "Article is not submitted" target))
+        (when (not (= c/article-status-submitted (:article_statuses_id article))) (v/->result false "Article is not submitted" target))
         (v/->result target))))
 
 (defn future-date?

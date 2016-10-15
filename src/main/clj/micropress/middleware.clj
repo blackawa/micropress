@@ -2,7 +2,7 @@
   (:require [clojure.string :as str]
             [clojure.tools.logging :as log]
             [ring.util.response :as res]
-            [micropress.const.authorization :as const]
+            [micropress.constant.authorization :as const]
             [micropress.repository.session :as session]
             [micropress.service.auth :as auth]
             [micropress.service.authorization :as authorization]

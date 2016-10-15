@@ -1,5 +1,6 @@
 (ns micropress.validator.draft
-  (:require [micropress.repository.article :as article]
+  (:require [micropress.constant.code :as c]
+            [micropress.repository.article :as article]
             [micropress.repository.body-type :as body-type]
             [micropress.repository.tag :as tag]
             [micropress.util.validator :as v]
@@ -58,7 +59,7 @@
   [article-id target]
   (let [article (article/find-by-id article-id)]
     (or (when (nil? article) (v/->result false "Article does not exist" target))
-        (when (not (= 1 (:article_statuses_id article))) (v/->result false "Article is not draft" target))
+        (when (not (= c/article-status-submitted (:article_statuses_id article))) (v/->result false "Article is not draft" target))
         (v/->result target))))
 
 (defn your-draft-exist?
@@ -66,7 +67,7 @@
   (let [article (article/find-by-id article-id)]
     (or (when (nil? article) (v/->result false "Article does not exist" target))
         (when (not (= user-id (:users_id article))) (v/->result false "Article is not exist" target))
-        (when (not (= 1 (:article_statuses_id article))) (v/->result false "Article is not draft" target))
+        (when (not (= c/article-status-draft (:article_statuses_id article))) (v/->result false "Article is not draft" target))
         (v/->result target))))
 
 (defn valid-submit-flag?
