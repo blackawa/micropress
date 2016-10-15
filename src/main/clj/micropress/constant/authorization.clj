@@ -1,4 +1,4 @@
-(ns micropress.const.authorization)
+(ns micropress.constant.authorization)
 
 (def uri-method-defs
   "認可のミドルウェアがこのシーケンスを読んで、あるユーザーがアクセス可能かどうか判断する."

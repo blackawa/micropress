@@ -4,7 +4,8 @@
                                    select
                                    update set-fields
                                    delete
-                                   where with]]
+                                where with]]
+            [micropress.constant.code :as c]
             [micropress.entity :as e]))
 
 (defn find-draft-by-id
@@ -23,7 +24,7 @@
 (defn insert-article
   [title body thumbnail-url body-type user-id]
   (insert e/articles
-          (values {:article_statuses_id 1
+          (values {:article_statuses_id c/article-status-draft
                    :users_id user-id
                    :title title
                    :thumbnail_url thumbnail-url
@@ -38,13 +39,13 @@
 (defn submit-draft
   [article-id]
   (update e/articles
-          (set-fields {:article_statuses_id 2})
+          (set-fields {:article_statuses_id c/article-status-submitted})
           (where {:id article-id})))
 
 (defn publish-article
   [article-id publish-at]
   (update e/articles
-          (set-fields {:article_statuses_id 4
+          (set-fields {:article_statuses_id c/article-status-published
                        :published_at publish-at})))
 
 (defn update-draft
@@ -55,7 +56,9 @@
                        :thumbnail_url thumbnail-url
                        :body_type body-type
                        :users_id user-id
-                       :article_statuses_id (if submit? 2 1)})
+                       :article_statuses_id (if submit?
+                                              c/article-status-submitted
+                                              c/article-status-draft)})
           (where {:id article-id})))
 
 (defn delete-article
