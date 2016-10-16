@@ -3,8 +3,6 @@
             [micropress.validator.user :as vu]
             [schema.core :as s]))
 
-(def auth-format [s/Num])
-
 (defn pwd-input?
   [pwd target]
   (if (clojure.string/blank? pwd)
