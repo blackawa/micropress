@@ -1,11 +1,19 @@
 (ns micropress.validator.user
   (:require [clj-time.core :as t]
+            [micropress.repository.auth :as auth]
             [micropress.repository.user :as user]
             [micropress.repository.user-status :as user-status]
             [micropress.service.invite :as invite]
             [micropress.util.validator :as v]
-            [micropress.validator.auth :as va]
             [schema.core :as s]))
+
+(defn valid-auth?
+  "権限IDが正しいか調べる"
+  [auth target]
+  (let [ok? (->> auth
+                 (map #(not (nil? (auth/find-by-id %))))
+                 (reduce (fn [b1 b2] (and b1 b2))))]
+    (v/->result ok? (when (not ok?) "Contains invalid auth.") target)))
 
 (defn valid-username?
   [username target]
@@ -28,7 +36,8 @@
 
 (defn valid-email?
   [email target]
-  (v/validate v/email-format email target "Invalid Email Address."))
+  (or (when (clojure.string/blank? email) (v/->result false "Email must be input" target))
+      (v/validate v/email-format email target "Invalid email address format.")))
 
 (defn valid-user-status?
   [user-status-id target]
@@ -55,4 +64,4 @@
    (valid-email? email :email)
    ;; todo implement validation for image-url
    (valid-user-status? user-status-id :user-status-id)
-   (va/valid-auth? auth :auth)))
+   (valid-auth? auth :auth)))

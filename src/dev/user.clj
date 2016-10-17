@@ -1,15 +1,18 @@
 (ns user
-  (:require [alembic.still :as a]
+  (:require [buddy.core.codecs :refer [bytes->hex]]
             [buddy.core.hash :as hash]
-            [buddy.core.codecs :refer [bytes->hex]]
+            [environ.core :refer [env]]
             [micropress.core :refer :all]
             [ragtime.jdbc :as jdbc]
             [ragtime.repl :as ragtime]))
 
-(defn reload-deps []
-  (a/load-project))
-
-(def config {:datastore (jdbc/sql-database {:connection-uri "jdbc:mysql://localhost:3306/micropress?user=micropress&password=p@ssw0rd&autoReconnect=true&useSSL=false"})
+(def config {:datastore (jdbc/sql-database
+                         {:connection-uri (format "jdbc:mysql://%s:%s/%s?user=%s&password=%s&autoReconnect=true&useSSL=false"
+                                                  (:host env)
+                                                  (:port env)
+                                                  (:db env)
+                                                  (:username env)
+                                                  (:password env))})
              :migrations (jdbc/load-resources "migrations")})
 
 (defn migrate []
@@ -17,9 +20,3 @@
 
 (defn rollback []
   (ragtime/rollback config))
-
-(defn hash-pwd
-  "平文パスワードをSHA-256ハッシュ化して返却する."
-  [row-pwd]
-  (-> (hash/sha256 row-pwd)
-      (bytes->hex)))

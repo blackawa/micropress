@@ -4,9 +4,10 @@ pom.xml
 /classes/
 /out/
 /target/
+.lein-env
+.lein-failures
 .lein-deps-sum
 .lein-repl-history
 .lein-plugins/
 .repl
 .nrepl-port
-.lein-env

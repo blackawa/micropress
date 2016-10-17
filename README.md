@@ -1,16 +1,36 @@
 # micropress
 
-clj! cms!! microservice architecture!!!
+Clojure x CMS!
 
-micropress is a Content Management System with Microservice architecture.
+micropress is the API based Content Management System written by clojure.
 
 ## Setup
 
-### Install MySQL and migrate
+### Install MySQL
 
-1. [Download MySQL from here](https://dev.mysql.com/downloads/installer/).
-1. Create database `micropress`.
-1. start repl(`lein repl`), and migrate(`(migrate config)`).
+[Download MySQL from here](https://dev.mysql.com/downloads/installer/), and install.
+
+Log in with root user, and create schema.
+
+```
+create user 'micropress'@'localhost' identified by 'p@ssw0rd';
+create database micropress;
+grant all privileges on micropress.* to 'micropress'@'localhost';
+create database micropress_test;
+grant all privileges on micropress_test.* to 'micropress'@'localhost';
+flush privileges;
+```
+
+Migrate.
+
+```
+lein repl
+user=> (migrate)
+user=> (quit)
+lein with-profile +test repl
+user=> (migrate)
+user=> (quit)
+```
 
 ## Development
 
@@ -18,13 +38,22 @@ To get an interactive development environment run:
 
     lein repl
 
-and run
+To Start server:
 
-    (start)
+    user=> (run)
 
 To clean all compiled files:
 
     lein clean
+
+To run test:
+
+    lein test
+
+or
+
+    lein with-profile +test
+    user=> (run-all-tests)
 
 ## License
 

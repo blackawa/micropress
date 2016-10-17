@@ -33,11 +33,18 @@
 
   :repl-options {:port 51423}
 
-  :profiles {:dev {:dependencies [[alembic "0.3.2"]]
+  :profiles {:dev {:dependencies [[alembic "0.3.2"]
+                                  [eftest "0.1.1"]]
                    :source-paths ["src/main/clj" "src/dev"]
                    :repl-options {:init (set! *print-length* 50)}
                    :env {:host "127.0.0.1"
-                         :port 3306
+                         :port "3306"
                          :db "micropress"
                          :username "micropress"
-                         :password "p@ssw0rd"}}})
+                         :password "p@ssw0rd"}}
+             :test {:dependencies [[eftest "0.1.1"]]
+                    :env {:host "127.0.0.1"
+                          :port "3306"
+                          :db "micropress_test"
+                          :username "micropress"
+                          :password "p@ssw0rd"}}})
