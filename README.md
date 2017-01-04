@@ -4,6 +4,18 @@ media service with clj / cljs
 
 ## Developing
 
+### Prerequisite
+
+You need
+
+* [Java SE](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html)
+* [Leiningen](http://leiningen.org/)
+* [postgresql](https://www.postgresql.org/download/)
+* [Docker](https://www.docker.com/)
+* [AWS Confidential file which can upload file to Amazon s3](https://aws.amazon.com/jp/s3/)
+
+on your machine.
+
 ### Setup
 
 When you first clone this repository, run:
@@ -15,13 +27,19 @@ lein setup
 This will create files for local configuration, and prep your system
 for the project.
 
-Next connect the repository to the [Heroku][] app:
+Next, you need database user and schema for micropress, run:
 
 ```sh
-heroku git:remote -a FIXME
+# create user for micropress
+$ createuser micropress -P
+Enter password for new role: p@ssw0rd
+Enter it again: p@ssw0rd
+# create schema for micropress
+$ createdb micropress -O micropress
+# add superuser privilege to user micropress
+$ psql micropress
+micropress=# alter role micropress with superuser;
 ```
-
-[heroku]: https://www.heroku.com/
 
 ### Environment
 
@@ -45,7 +63,7 @@ dev=> (go)
 :started
 ```
 
-By default this creates a web server at <http://localhost:3000>.
+This creates a web server at <http://localhost:3001>.
 
 When you make changes to your source files, use `reset` to reload any
 modified files and reset the server. Changes to CSS or ClojureScript
