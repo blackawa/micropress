@@ -9,7 +9,7 @@
               [hanami.core :as hanami]))
 
 (defn -main [& args]
-  (let [bindings {'http-port (Integer/parseInt (:port env "3000"))
+  (let [bindings {'http-port (Integer/parseInt (:port env "3001"))
                   'db-uri    (hanami/jdbc-uri (:database-url env))}
         system   (->> (load-system [(io/resource "micropress/system.edn")] bindings)
                       (component/start))]
