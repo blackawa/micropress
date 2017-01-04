@@ -1,6 +1,7 @@
 (ns micropress.endpoint.site
   (:require [compojure.core :refer :all]
-            [hiccup.page :refer [html5 include-js]]))
+            [hiccup.page :refer [html5 include-js]]
+            [ring.util.response :refer [redirect]]))
 
 (defn- index []
   (html5
@@ -8,17 +9,16 @@
     [:meta {:charset "utf-8"}]
     [:link {:rel "stylesheet" :href "/assets/normalize.css/normalize.css"}]
     [:link {:rel "stylesheet" :href "/assets/pure/pure-min.css"}]
-    [:title "親子で開発日記 | oya-co-lab"]]
+    [:title "micropress console"]]
    [:body
     [:div {:id "app"}
-     [:h2 "Loading..."]]
+     [:p "loading..."]]
     (include-js "/js/main.js")
     [:script "micropress.main.init();"]]))
 
 (defn endpoint [{{db :spec} :db}]
   (routes
-   (GET "/" [] (index))
-   (GET "/articles/:id" [] (index))
+   (GET "/" [] (redirect "/admin/login"))
    (GET "/admin/login" [] (index))
    (GET "/admin/articles" [] (index))
    (GET "/admin/articles/new" [] (index))
