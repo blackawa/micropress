@@ -1,0 +1,25 @@
+{:components
+ {:figwheel #var duct.component.figwheel/server}
+ :config
+ {:app
+  {:middleware
+   {:functions {:stacktrace #var ring.middleware.stacktrace/wrap-stacktrace}
+    :applied   ^:replace [:not-found :webjars :ring-defaults :stacktrace]}}
+  :http
+  {:port 3000}
+  :db
+  {:uri "jdbc:postgresql://localhost/oyacolab"
+   :username "oyacolab"
+   :password "p@ssw0rd"}
+  :figwheel
+  {:css-dirs ["resources/oyacolab/public/css"]
+   :builds
+   [{:id "dev"
+     :source-paths ["src-cljs" "dev"]
+     :build-options {:optimizations :none
+                     :main "cljs.user"
+                     :asset-path "/js"
+                     :output-to  "target/figwheel/oyacolab/public/js/main.js"
+                     :output-dir "target/figwheel/oyacolab/public/js"
+                     :source-map true
+                     :source-map-path "/js"}}]}}}

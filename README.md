@@ -1,33 +1,164 @@
-# micropress
+# oyacolab
 
-clj! cms!! microservice architecture!!!
+media service with clj / cljs
 
-micropress is a Content Management System with Microservice architecture.
+## Developing
 
-## Setup
+### Setup
 
-### Install MySQL and migrate
+When you first clone this repository, run:
 
-1. [Download MySQL from here](https://dev.mysql.com/downloads/installer/).
-1. Create database `micropress`.
-1. start repl(`lein repl`), and migrate(`(migrate config)`).
+```sh
+lein setup
+```
 
-## Development
+This will create files for local configuration, and prep your system
+for the project.
 
-To get an interactive development environment run:
+Next connect the repository to the [Heroku][] app:
 
-    lein repl
+```sh
+heroku git:remote -a FIXME
+```
 
-and run
+[heroku]: https://www.heroku.com/
 
-    (start)
+### Environment
 
-To clean all compiled files:
+To begin developing, start with a REPL.
 
-    lein clean
+```sh
+lein repl
+```
 
-## License
+Then load the development environment.
 
-Copyright © 2016 blackawa
+```clojure
+user=> (dev)
+:loaded
+```
 
-Distributed under the Eclipse Public License either version 1.0 or  any later version.
+Run `go` to initiate and start the system.
+
+```clojure
+dev=> (go)
+:started
+```
+
+By default this creates a web server at <http://localhost:3000>.
+
+When you make changes to your source files, use `reset` to reload any
+modified files and reset the server. Changes to CSS or ClojureScript
+files will be hot-loaded into the browser.
+
+```clojure
+dev=> (reset)
+:reloading (...)
+:resumed
+```
+
+If you want to access a ClojureScript REPL, make sure that the site is loaded
+in a browser and run:
+
+```clojure
+dev=> (cljs-repl)
+Waiting for browser connection... Connected.
+To quit, type: :cljs/quit
+nil
+cljs.user=>
+```
+
+### Testing
+
+Testing is fastest through the REPL, as you avoid environment startup
+time.
+
+```clojure
+dev=> (test)
+...
+```
+
+But you can also run tests through Leiningen.
+
+```sh
+lein test
+```
+
+### Migrations
+
+Migrations are handled by [ragtime][]. Migration files are stored in
+the `resources/migrations` directory, and are applied in alphanumeric
+order.
+
+To update the database to the latest migration, open the REPL and run:
+
+```clojure
+dev=> (migrate)
+Applying 20150815144312-create-users
+Applying 20150815145033-create-posts
+```
+
+To rollback the last migration, run:
+
+```clojure
+dev=> (rollback)
+Rolling back 20150815145033-create-posts
+```
+
+Note that the system needs to be setup with `(init)` or `(go)` before
+migrations can be applied.
+
+[ragtime]: https://github.com/weavejester/ragtime
+
+### Generators
+
+This project has several generator functions to help you create files.
+
+To create a new endpoint:
+
+```clojure
+dev=> (gen/endpoint "bar")
+Creating file src/foo/endpoint/bar.clj
+Creating file test/foo/endpoint/bar_test.clj
+Creating directory resources/foo/endpoint/bar
+nil
+```
+
+To create a new component:
+
+```clojure
+dev=> (gen/component "baz")
+Creating file src/foo/component/baz.clj
+Creating file test/foo/component/baz_test.clj
+nil
+```
+
+To create a new boundary:
+
+```clojure
+dev=> (gen/boundary "quz" foo.component.baz.Baz)
+Creating file src/foo/boundary/quz.clj
+Creating file test/foo/boundary/quz_test.clj
+nil
+```
+
+To create a new SQL migration:
+
+```clojure
+dev=> (gen/sql-migration "create-users")
+Creating file resources/foo/migrations/20160519143643-create-users.up.sql
+Creating file resources/foo/migrations/20160519143643-create-users.down.sql
+nil
+```
+
+## Deploying
+
+To deploy the project, run:
+
+```sh
+lein deploy
+```
+
+## Legal
+
+Copyright © 2016 FIXME
