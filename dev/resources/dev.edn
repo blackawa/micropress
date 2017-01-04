@@ -8,18 +8,18 @@
   :http
   {:port 3000}
   :db
-  {:uri "jdbc:postgresql://localhost/oyacolab"
-   :username "oyacolab"
+  {:uri "jdbc:postgresql://localhost/micropress"
+   :username "micropress"
    :password "p@ssw0rd"}
   :figwheel
-  {:css-dirs ["resources/oyacolab/public/css"]
+  {:css-dirs ["resources/micropress/public/css"]
    :builds
    [{:id "dev"
      :source-paths ["src-cljs" "dev"]
      :build-options {:optimizations :none
                      :main "cljs.user"
                      :asset-path "/js"
-                     :output-to  "target/figwheel/oyacolab/public/js/main.js"
-                     :output-dir "target/figwheel/oyacolab/public/js"
+                     :output-to  "target/figwheel/micropress/public/js/main.js"
+                     :output-dir "target/figwheel/micropress/public/js"
                      :source-map true
                      :source-map-path "/js"}}]}}}

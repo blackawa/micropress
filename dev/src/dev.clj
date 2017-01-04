@@ -11,11 +11,11 @@
             [reloaded.repl :refer [system init start stop go reset]]))
 
 (defn new-system []
-  (load-system (keep io/resource ["oyacolab/system.edn" "dev.edn" "local.edn"])))
+  (load-system (keep io/resource ["micropress/system.edn" "dev.edn" "local.edn"])))
 
 (when (io/resource "local.clj")
   (load "local"))
 
-(gen/set-ns-prefix 'oyacolab)
+(gen/set-ns-prefix 'micropress)
 
 (reloaded.repl/set-init! new-system)

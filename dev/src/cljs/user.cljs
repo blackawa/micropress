@@ -1,7 +1,7 @@
 (ns cljs.user
   (:require [devtools.core :as devtools]
             [figwheel.client :as figwheel]
-            [oyacolab.main :as main]))
+            [micropress.main :as main]))
 
 (js/console.info "Starting in development mode")
 

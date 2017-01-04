@@ -1,4 +1,4 @@
-(defproject oyacolab "0.1.0-SNAPSHOT"
+(defproject micropress "0.1.0-SNAPSHOT"
   :description "API based Contents Management System"
   :url "FIXME"
   :min-lein-version "2.0.0"
@@ -33,8 +33,8 @@
                  [markdown-clj "0.9.91"]]
   :plugins [[lein-environ "1.0.3"]
             [lein-cljsbuild "1.1.2"]]
-  :main ^:skip-aot oyacolab.main
-  :uberjar-name "oyacolab-standalone.jar"
+  :main ^:skip-aot micropress.main
+  :uberjar-name "micropress-standalone.jar"
   :target-path "target/%s/"
   :resource-paths ["resources" "target/cljsbuild"]
   :prep-tasks [["javac"] ["cljsbuild" "once"] ["compile"]]
@@ -44,7 +44,7 @@
      :jar true
      :source-paths ["src-cljs"]
      :compiler
-     {:output-to     "target/cljsbuild/oyacolab/public/js/main.js"
+     {:output-to     "target/cljsbuild/micropress/public/js/main.js"
       :optimizations :advanced
       :closure-defines {goog.DEBUG false}}}]}
   :aliases {"setup"  ["run" "-m" "duct.util.repl/setup"]
