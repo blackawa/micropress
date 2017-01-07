@@ -9,7 +9,7 @@
 
 (devtools/install!)
 
-(figwheel/start {:websocket-url "ws://localhost:3449/figwheel-ws"})
+(figwheel/start {:websocket-url "ws://localhost:3450/figwheel-ws"})
 
 (defn log [& args]
   (.apply js/console.log js/console (apply array args)))
