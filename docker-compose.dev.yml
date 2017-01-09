@@ -1,0 +1,8 @@
+db:
+  image: postgres
+  ports:
+    - "5432:5432"
+  environment:
+    POSTGRES_PASSWORD: "p@ssw0rd"
+    POSTGRES_USER: "micropress"
+    POSTGRES_DB: "micropress"

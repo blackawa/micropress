@@ -1,6 +1,6 @@
 # micropress
 
-media service with clj / cljs
+Content management system with Clojure / Script.
 
 ## Developing
 
@@ -10,8 +10,8 @@ You need
 
 * [Java SE](http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html)
 * [Leiningen](http://leiningen.org/)
-* [postgresql](https://www.postgresql.org/download/)
 * [Docker](https://www.docker.com/)
+* [Docker Compose](https://docs.docker.com/compose/)
 * [AWS Confidential file which can upload file to Amazon s3](https://aws.amazon.com/jp/s3/)
 
 on your machine.
@@ -27,20 +27,6 @@ lein setup
 This will create files for local configuration, and prep your system
 for the project.
 
-Next, you need database user and schema for micropress, run:
-
-```sh
-# create user for micropress
-$ createuser micropress -P
-Enter password for new role: p@ssw0rd
-Enter it again: p@ssw0rd
-# create schema for micropress
-$ createdb micropress -O micropress
-# add superuser privilege to user micropress
-$ psql micropress
-micropress=# alter role micropress with superuser;
-```
-
 ### Environment
 
 To begin developing, start with a REPL.
@@ -54,6 +40,12 @@ Then load the development environment.
 ```clojure
 user=> (dev)
 :loaded
+```
+
+Before you start application, run docker and boot the database.
+
+```sh
+docker-compose up -f docker-compose.dev.yml -d
 ```
 
 Run `go` to initiate and start the system.
@@ -100,6 +92,14 @@ But you can also run tests through Leiningen.
 
 ```sh
 lein test
+```
+
+### Build
+
+Run the command to build the docker image:
+
+```sh
+lein do clean, uberjar && docker build -t micropress:0.1 .
 ```
 
 ### Migrations
@@ -169,14 +169,6 @@ Creating file resources/foo/migrations/20160519143643-create-users.down.sql
 nil
 ```
 
-## Deploying
-
-To deploy the project, run:
-
-```sh
-lein deploy
-```
-
 ## Legal
 
-Copyright © 2016 FIXME
+Copyright © 2017 blackawa
