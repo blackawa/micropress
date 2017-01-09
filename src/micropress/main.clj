@@ -10,7 +10,9 @@
 
 (defn -main [& args]
   (let [bindings {'http-port (Integer/parseInt (:port env "3001"))
-                  'db-uri    (hanami/jdbc-uri (:database-url env))}
+                  'db-uri    (:database-url env) ;;(hanami/jdbc-uri (:database-url env))
+                  'username  (:username env)
+                  'password  (:password env)}
         system   (->> (load-system [(io/resource "micropress/system.edn")] bindings)
                       (component/start))]
     (println "migrating")

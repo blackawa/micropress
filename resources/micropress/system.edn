@@ -44,6 +44,8 @@
   :http
   {:port http-port}
   :db
-  {:uri db-uri}
+  {:uri db-uri
+   :username username
+   :password password}
   :ragtime
   {:resource-path "micropress/migrations"}}}
