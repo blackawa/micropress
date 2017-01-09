@@ -1,0 +1,11 @@
+delete from editor;
+--;;
+delete from editor_status;
+--;;
+alter sequence editor_status_id_seq restart;
+--;;
+delete from article;
+--;;
+delete from article_status;
+--;;
+alter sequence article_status_id_seq restart;

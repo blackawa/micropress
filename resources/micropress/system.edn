@@ -1,0 +1,51 @@
+{:components
+ {:app  #var duct.component.handler/handler-component
+  :http #var ring.component.jetty/jetty-server
+  :db   #var duct.component.hikaricp/hikaricp
+  :ragtime #var duct.component.ragtime/ragtime}
+ :endpoints
+ {:site #var micropress.endpoint.site/endpoint
+  :api #var micropress.endpoint.api/endpoint}
+ :dependencies
+ {:http [:app]
+  :app  [:site :api]
+  :ragtime [:db]
+  :api [:db]}
+ :config
+ {:app
+  {:middleware
+   {:functions
+    {:hide-errors   #var duct.middleware.errors/wrap-hide-errors
+     :not-found     #var duct.middleware.not-found/wrap-not-found
+     :ring-defaults #var ring.middleware.defaults/wrap-defaults
+     :webjars       #var ring.middleware.webjars/wrap-webjars}
+    :applied
+    [:not-found :webjars :ring-defaults :hide-errors]
+    :arguments
+    {:not-found     #resource "micropress/errors/404.html"
+     :hide-errors   #resource "micropress/errors/500.html"
+     :ring-defaults
+     {:params    {:urlencoded true
+                  :keywordize true
+                  :multipart  true
+                  :nested     true}
+      :cookies   true
+      :session   {:flash true
+                  :cookie-attrs {:http-only true}}
+      :security  {:anti-forgery   false
+                  :xss-protection {:enable? true, :mode :block}
+                  :frame-options  :sameorigin
+                  :content-type-options :nosniff}
+      :static    {:resources "micropress/public"}
+      :responses {:not-modified-responses true
+                  :absolute-redirects     true
+                  :content-types          true
+                  :default-charset        "utf-8"}}}}}
+  :http
+  {:port http-port}
+  :db
+  {:uri db-uri
+   :username username
+   :password password}
+  :ragtime
+  {:resource-path "micropress/migrations"}}}

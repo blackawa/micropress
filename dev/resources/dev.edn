@@ -1,0 +1,26 @@
+{:components
+ {:figwheel #var duct.component.figwheel/server}
+ :config
+ {:app
+  {:middleware
+   {:functions {:stacktrace #var ring.middleware.stacktrace/wrap-stacktrace}
+    :applied   ^:replace [:not-found :webjars :ring-defaults :stacktrace]}}
+  :http
+  {:port 3001}
+  :db
+  {:uri "jdbc:postgresql://localhost/micropress"
+   :username "micropress"
+   :password "p@ssw0rd"}
+  :figwheel
+  {:css-dirs ["resources/micropress/public/css"]
+   :server-port 3450
+   :builds
+   [{:id "dev"
+     :source-paths ["src-cljs" "dev"]
+     :build-options {:optimizations :none
+                     :main "cljs.user"
+                     :asset-path "/js"
+                     :output-to  "target/figwheel/micropress/public/js/main.js"
+                     :output-dir "target/figwheel/micropress/public/js"
+                     :source-map true
+                     :source-map-path "/js"}}]}}}
