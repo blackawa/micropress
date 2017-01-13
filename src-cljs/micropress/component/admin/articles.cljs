@@ -43,6 +43,7 @@
       (let [form (subscribe [:admin.articles.new.form])
             error (subscribe [:admin.articles.new.error])]
         [:div
+         [:p [:a {:href "/admin/articles"} "back to articles"]]
          [:h3 "new article"]
          [:p.error @error]
          [:form
@@ -92,7 +93,8 @@
       (let [form (subscribe [:admin.article.edit.form])
             error (subscribe [:admin.articles.edit.error])]
         [:div
-         [:h3 "new article"]
+         [:p [:a {:href "/admin/articles"} "back to articles"]]
+         [:h3 "edit article"]
          [:p.error @error]
          [:form
           [:p.title
