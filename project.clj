@@ -75,5 +75,6 @@
                    :repl-options {:init-ns user
                                   :nrepl-middleware [cemerick.piggieback/wrap-cljs-repl]}
                    :env {:port "3000"
-                         :access-control-allow-origin "*"}}
+                         :access-control-allow-origin "*"
+                         :bucket-name "micropress"}}
    :project/test  {}})

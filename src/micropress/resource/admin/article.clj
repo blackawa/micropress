@@ -3,40 +3,16 @@
             [clj-time.jdbc]
             [clj-time.format :as format]
             [clojure.tools.logging :as log]
-            [liberator.core :refer [defresource]]
+            [liberator.core :refer [resource]]
             [liberator.representation :refer [ring-response]]
             [micropress.repository.article :as article]
             [micropress.repository.auth-token :as token]
-            [micropress.repository.editor :as editor]))
-
-;; TODO: 各フェーズの関数をバラして、 [false {::hoge fuga}]を返すようにする.
-;; それを必要な分だけ繰り返せばmalformed?が分かるようにしてDRYにしたい.
-;; malformed?などを共通関数に切り出すと、 ::data などが次の関数に渡せなくなる.
-(defn- malformed? "認証トークンと(post / putなら)リクエストボディのパースを行う." [ctx]
-  (let [auth-token (second (clojure.string/split (-> ctx (get-in [:request :headers]) (get "authorization")) #"\s"))
-        params (-> ctx (get-in [:request :params]))
-        body (when (#{:put} (get-in ctx [:request :request-method])) (-> ctx (get-in [:request :body]) slurp))]
-    (if auth-token
-      (if body
-        (try
-          [false {::auth-token auth-token ::data (read-string body) ::params params}]
-          (catch RuntimeException e
-            [true {::error "invalid body"}]))
-        [false {::auth-token auth-token ::params params}])
-      [true {::error "invalid auth token"}])))
-
-(defn- handle-malformed [ctx]
-  (let [error (::error ctx)]
-    (str {:error error})))
-
-(defn- authorized? [ctx db]
-  (let [auth-token (first (token/find-by-token {:token (::auth-token ctx)} {:connection db}))]
-    (when (time/before? (time/now) (:expire auth-token))
-      [true {::editor-id (:editor_id auth-token)}])))
+            [micropress.repository.editor :as editor]
+            [micropress.resource.base :refer [authenticated]]))
 
 (defn- conflict? [ctx]
-  (let [id (-> ctx ::params :id)
-        data (::data ctx)]
+  (let [id (-> ctx :micropress.resource.base/params :id)
+        data (:micropress.resource.base/data ctx)]
     (if (= (str id) (str (:id data)))
       false
       [true {::error "invalid request"}])))
@@ -52,7 +28,7 @@
     3 :withdrawn))
 
 (defn- handle-ok [ctx db]
-  (let [id (-> ctx ::params :id)
+  (let [id (-> ctx :micropress.resource.base/params :id)
         article (first (article/find-by-id {:id (read-string id)} {:connection db}))]
     (-> article
         (assoc :save-type (save-type (:article_status_id article)))
@@ -66,24 +42,22 @@
     :withdrawn 3))
 
 (defn- put! [ctx db]
-  (let [data (::data ctx)
+  (let [data (:micropress.resource.base/data ctx)
         article-status-id (article-status-id (:save-type data))
-        editor-id (::editor-id ctx)]
-    (-> ctx
-        ::data
+        editor-id (:micropress.resource.base/editor-id ctx)]
+    (-> data
         (assoc :article_status_id article-status-id)
         (dissoc :save-type)
         (assoc :editor_id editor-id)
         (assoc :published_date (when (= :published (:save-type data)) (time/now)))
         (article/update-article! {:connection db}))))
 
-(defresource article [db]
-  :allowed-methods [:get :put]
-  :available-media-types ["application/edn"]
-  :malformed? malformed?
-  :handle-malformed handle-malformed
-  :authorized? (fn [ctx] (authorized? ctx db))
-  :conflict? conflict?
-  :handle-conflict handle-conflict
-  :handle-ok (fn [ctx] (handle-ok ctx db))
-  :put! (fn [ctx] (put! ctx db)))
+(defn article [db]
+  (resource
+   (authenticated db)
+   :allowed-methods [:get :put]
+   :available-media-types ["application/edn"]
+   :conflict? conflict?
+   :handle-conflict handle-conflict
+   :handle-ok (fn [ctx] (handle-ok ctx db))
+   :put! (fn [ctx] (put! ctx db))))

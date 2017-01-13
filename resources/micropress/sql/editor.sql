@@ -6,3 +6,8 @@ values
 
 -- name: find-by-username
 select * from editor where username = :username
+
+-- name: update-editor!
+update editor set
+password = :password
+where id = :id
