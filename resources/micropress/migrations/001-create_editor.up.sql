@@ -1,5 +1,5 @@
 create table editor_status (
-  id serial primary key,
+  id integer primary key,
   description text not null
 );
 --;;
