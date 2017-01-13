@@ -10,6 +10,12 @@
   (let [params (-> ctx (get-in [:request :params]))]
     [false {::params params}]))
 
+(defn- exists? [ctx db]
+  (let [article (article/find-published-by-id {:id (read-string (-> ctx ::params :id))} {:connection db})]
+    (if (empty? article)
+      false
+      [true {::data article}])))
+
 (defn- handle-options [ctx]
   (ring-response "" {:headers {"Access-Control-Allow-Methods" "GET"
                                "Access-Control-Allow-Origin" (:access-control-allow-origin env)
@@ -26,5 +32,6 @@
   :allowed-methods [:get :options]
   :available-media-types ["application/edn"]
   :malformed? malformed?
+  :exists? #(exists? % db)
   :handle-options handle-options
-  :handle-ok (fn [ctx] (handle-ok ctx db)))
+  :handle-ok #(handle-ok % db))
