@@ -45,7 +45,7 @@ user=> (dev)
 Before you start application, run docker and boot the database.
 
 ```sh
-docker-compose up -f docker-compose.dev.yml -d
+docker-compose up -d --build
 ```
 
 Run `go` to initiate and start the system.
