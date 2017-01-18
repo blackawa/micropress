@@ -18,13 +18,13 @@
         [:div
          [:h3 "login"]
          [:p.error (:error @error)]
-         [:form
-          [:p [:label "username" [:input {:type "text"
-                                    :placeholder "username"
-                                    :value (:username @form)
-                                    :on-change #(dispatch [:login.form.username (-> % .-target .-value)])}]]]
-          [:p [:label "password" [:input {:type "password"
-                                    :placeholder "password"
-                                    :value (:password @form)
-                                    :on-change #(dispatch [:login.form.password (-> % .-target .-value)])}]]]
-          [:button {:type "submit" :on-click #(do (.preventDefault %) (authenticate! @form))} "Login"]]]))}))
+         [:form.ui.form
+          [:p.inline.field [:label "username" [:input {:type "text"
+                                                       :placeholder "username"
+                                                       :value (:username @form)
+                                                       :on-change #(dispatch [:login.form.username (-> % .-target .-value)])}]]]
+          [:p.inline.field [:label "password" [:input {:type "password"
+                                                       :placeholder "password"
+                                                       :value (:password @form)
+                                                       :on-change #(dispatch [:login.form.password (-> % .-target .-value)])}]]]
+          [:button.ui.teal.button {:type "submit" :on-click #(do (.preventDefault %) (authenticate! @form))} "Login"]]]))}))

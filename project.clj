@@ -15,7 +15,7 @@
                  [ring-webjars "0.1.1"]
                  [org.slf4j/slf4j-nop "1.7.21"]
                  [org.webjars/normalize.css "3.0.2"]
-                 [org.webjars/pure "0.6.0"]
+                 [org.webjars/Semantic-UI "2.2.7"]
                  [duct/hikaricp-component "0.1.0"]
                  [org.postgresql/postgresql "9.4.1211"]
                  [duct/ragtime-component "0.1.4"]

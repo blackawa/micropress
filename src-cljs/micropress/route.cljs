@@ -17,6 +17,8 @@
   (dispatch [:route [:articles.new]]))
 (defroute "/admin/articles/:id" [id]
   (dispatch [:route [:article id]]))
+(defroute "/admin/editors" []
+  (dispatch [:route [:editors]]))
 
 ;; route ===> view ===========================
 ;; inner-view ================================

@@ -40,3 +40,7 @@
 (reg-sub
  :customer.articles
  (fn [db _] (:data db)))
+
+(reg-sub
+ :admin.articles.preview
+ (fn [db _] (:preview? db)))

@@ -1,0 +1,7 @@
+div#app {
+    padding: 4em;
+}
+
+span.tab.item {
+    cursor: pointer;
+}

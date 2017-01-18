@@ -8,9 +8,12 @@
    [:head
     [:meta {:charset "utf-8"}]
     [:link {:rel "stylesheet" :href "/assets/normalize.css/normalize.css"}]
-    [:link {:rel "stylesheet" :href "/assets/pure/pure-min.css"}]
-    [:title "micropress console"]]
+    [:link {:rel "stylesheet" :href "/assets/Semantic-UI/semantic.min.css"}]
+    [:link {:rel "stylesheet" :href "/style.css"}]
+    [:title "console | micropress"]]
    [:body
+    [:header.ui.fixed.inverted.teal.menu
+     [:a.ui.inverted.header.item {:href "/"} "console | micropress"]]
     [:div {:id "app"}
      [:p "loading..."]]
     (include-js "/js/main.js")
@@ -22,4 +25,6 @@
    (GET "/admin/login" [] (index))
    (GET "/admin/articles" [] (index))
    (GET "/admin/articles/new" [] (index))
-   (GET "/admin/articles/:id" [] (index))))
+   (GET "/admin/articles/:id" [] (index))
+   (GET "/admin/editors" [] (index))
+   (GET "/admin/editors/:id" [] (index))))

@@ -46,7 +46,8 @@
  (fn [db _]
    (-> db
        (assoc :form {:save-type :draft})
-       (assoc :error {}))))
+       (assoc :error {})
+       (assoc :preview? false))))
 
 (reg-event-db
  :admin.articles.new.title
@@ -68,7 +69,8 @@
  (fn [db _]
    (-> db
        (assoc :form {})
-       (assoc :error {}))))
+       (assoc :error {})
+       (assoc :preview? false))))
 
 (reg-event-db
  :admin.article
@@ -115,3 +117,8 @@
  :admin.file.upload.error
  (fn [db [_ error]]
    (assoc db [:error] error)))
+
+(reg-event-db
+ :admin.articles.preview
+ (fn [db [_ preview?]]
+   (assoc db :preview? preview?)))
