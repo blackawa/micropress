@@ -31,13 +31,9 @@
                [:td (:article_status_id a)]])
             @articles)]]]))}))
 
-(defn new-article []
+(defn- article-form [dropdown button]
   (reagent/create-class
-   {:component-will-mount
-    (fn []
-      (auth-token/check)
-      (dispatch [:init-new-article-db]))
-    :reagent-render
+   {:reagent-render
     (fn []
       (let [form (subscribe [:admin.articles.new.form])
             error (subscribe [:admin.articles.new.error])
@@ -80,13 +76,47 @@
                      :on-change #(file/upload (-> % .-target .-files (aget 0)))}]]
            [:span.four.wide.field
             [:label "save type"]
-            [:select
-             {;; use (or) to suppress error to use nil for value of <select>
-              :value (or (:save-type @form) "")
-              :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
-             [:option {:value :draft} "draft"]
-             [:option {:value :published} "published"]]]
-           [:span.four.wide.field [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/save @form))} "create"]]]]]))}))
+            [dropdown]]
+           [:span.four.wide.field [button]]]]]))}))
+
+(defn- new-article-dropdown []
+  (let [form (subscribe [:admin.articles.new.form])]
+    [:select
+     {;; use (or) to suppress error to use nil for value of <select>
+      :value (or (:save-type @form) "")
+      :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
+     [:option {:value :draft} "draft"]
+     [:option {:value :published} "published"]]))
+
+(defn- new-article-button []
+  (let [form (subscribe [:admin.articles.new.form])]
+    [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/save @form))} "create"]))
+
+(defn new-article []
+  (reagent/create-class
+   {:component-will-mount
+    (fn []
+      (auth-token/check)
+      (dispatch [:init-new-article-db]))
+    :reagent-render
+    (fn []
+      [article-form
+       new-article-dropdown
+       new-article-button])}))
+
+(defn- edit-article-dropdown []
+  (let [form (subscribe [:admin.articles.new.form])]
+    [:select
+     {;; use (or) to suppress error to use nil for value of <select>
+      :value (or (:save-type @form) "")
+      :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
+     [:option {:value :draft} "draft"]
+     [:option {:value :published} "published"]
+     [:option {:value :withdrawn} "withdrawn"]]))
+
+(defn- edit-article-button []
+  (let [form (subscribe [:admin.articles.new.form])]
+    [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/save @form))} "update"]))
 
 (defn article []
   (reagent/create-class
@@ -98,52 +128,6 @@
         (article/fetch-by-id id)))
     :reagent-render
     (fn []
-      (let [form (subscribe [:admin.article.edit.form])
-            error (subscribe [:admin.articles.edit.error])
-            preview? (subscribe [:admin.articles.preview])
-            preview-on-click (fn [preview?] (dispatch [:admin.articles.preview preview?]))]
-        [:div
-         [:p.error @error]
-         [:form.ui.form
-          [:p.field
-           [:input {:type "text"
-                    :id "title"
-                    :name "title"
-                    :placeholder "title"
-                    :value (:title @form)
-                    :on-change #(dispatch [:admin.articles.new.title (-> % .-target .-value)])}]]
-          [:div.field
-           (when @preview?
-             [:div.ui.top.attached.tabular.menu
-              [:span.tab.item {:on-click #(preview-on-click false)} "raw"]
-              [:span.tab.active.item {:on-click #(preview-on-click true)} "preview"]])
-           (when @preview?
-             [:div.ui.buttom.attached.segment
-              [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @form))}}]])
-           (when-not @preview?
-             [:div.ui.top.attached.tabular.menu
-              [:span.tab.active.item {:on-click #(preview-on-click false)} "raw"]
-              [:span.tab.item {:on-click #(preview-on-click true)} "preview"]])
-           (when-not @preview?
-             [:div.ui.bottom.attached.segment
-              [:textarea {:id "content"
-                          :name "content"
-                          :placeholder "content"
-                          :value (:content @form)
-                          :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]])]
-          [:p.fields
-           [:span.eight.wide.field
-            [:label {:for "image"} "image"]
-            [:input {:type "file"
-                     :id "image"
-                     :on-change #(file/upload (-> % .-target .-files (aget 0)))}]]
-           [:span.four.wide.field
-            [:label "save type"]
-            [:select
-             {;; use (or) to suppress error to use nil for value of <select>
-              :value (or (:save-type @form) "")
-              :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
-             [:option {:value :draft} "draft"]
-             [:option {:value :published} "published"]
-             [:option {:value :withdrawn} "withdrawn"]]]
-           [:span.four.wide.field [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/save @form))} "create"]]]]]))}))
+      [article-form
+       edit-article-dropdown
+       edit-article-button])}))
