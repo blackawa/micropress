@@ -44,3 +44,7 @@
 (reg-sub
  :admin.articles.preview
  (fn [db _] (:preview? db)))
+
+(reg-sub
+ :editor.form
+ (fn [db _] (:form db)))

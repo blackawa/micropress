@@ -15,8 +15,7 @@
              (if (not (empty? (re-find #"^:article.*" (str (first @route)))))
                [:a.active.item {:href "/admin/articles"} "Articles"]
                [:a.item {:href "/admin/articles"} "Articles"])
-             (if (not (empty? (re-find #"^:editor.*" (str (first @route)))))
-               [:a.active.item {:href "/admin/editors"} "Editors"]
-               [:a.item {:href "/admin/editors"} "Editors"])])
-          [:section.ui.bottom.attached.segment
-           [current-view @route]]]]))}))
+             (if (= :profile (first @route))
+               [:a.active.item {:href "/admin/profile"} "Profile"]
+               [:a.item {:href "/admin/profile"} "Profile"])])
+          [:section.ui.bottom.attached.segment [current-view @route]]]]))}))

@@ -122,3 +122,16 @@
  :admin.articles.preview
  (fn [db [_ preview?]]
    (assoc db :preview? preview?)))
+
+(reg-event-db
+ :init-editor-db
+ (fn [db _]
+   (-> db
+       (assoc :data {})
+       (assoc :form {})
+       (assoc :error {}))))
+
+(reg-event-db
+ :login.form.password
+ (fn [db [_ password]]
+   (assoc-in db [:form :password] password)))
