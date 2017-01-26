@@ -7,6 +7,7 @@
             [micropress.resource.admin.articles :as admin-articles]
             [micropress.resource.admin.article :as admin-article]
             [micropress.resource.admin.authentication :refer [authentication]]
+            [micropress.resource.admin.editors :as admin-editors]
             [micropress.resource.admin.editor :as admin-editor]
             [micropress.resource.admin.file :as file]))
 
@@ -15,7 +16,8 @@
            (ANY "/editor" _ (editor db))
            (ANY "/articles" _ (customer-articles/articles db))
            (ANY "/articles/:id" _ (customer-article/article db))
-           (ANY "/admin/editor/:id" _ (admin-editor/editor db))
+           (ANY "/admin/editors" _ (admin-editors/editors db))
+           (ANY "/admin/editors/:id" _ (admin-editor/editor db))
            (ANY "/admin/auth-token" _ (auth-token db))
            (ANY "/admin/authentication" _ (authentication db))
            (ANY "/admin/articles" _ (admin-articles/articles db))

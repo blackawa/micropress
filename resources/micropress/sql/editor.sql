@@ -11,3 +11,6 @@ select * from editor where username = :username
 update editor set
 password = :password
 where id = :id
+
+-- name: find-by-id
+select * from editor where id = :id
