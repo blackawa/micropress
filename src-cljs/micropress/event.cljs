@@ -135,3 +135,13 @@
  :login.form.password
  (fn [db [_ password]]
    (assoc-in db [:form :password] password)))
+
+(reg-event-db
+ :profile.data
+ (fn [db [_ data]]
+   (assoc db :data data)))
+
+(reg-event-db
+ :form.clear
+ (fn [db [_ _]]
+   (assoc db :form nil)))

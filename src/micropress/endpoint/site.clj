@@ -27,4 +27,5 @@
    (GET "/admin/articles/new" [] (index))
    (GET "/admin/articles/:id" [] (index))
    (GET "/admin/editors" [] (index))
-   (GET "/admin/editors/:id" [] (index))))
+   (GET "/admin/editors/:id" [] (index))
+   (GET "/admin/profile" [] (index))))
