@@ -9,11 +9,12 @@
   (reagent/create-class
    {:component-will-mount
     (fn []
+      (dispatch [:init-except-route])
       (auth-token/check :success-handler (fn [_] (accountant/navigate! "/admin/articles")))
       (dispatch [:init-except-route]))
     :reagent-render
     (fn []
-      (let [form (subscribe [:login.form])
+      (let [form (subscribe [:form])
             error (subscribe [:error])]
         [:div
          [:h3 "login"]

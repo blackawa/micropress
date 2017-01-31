@@ -30,20 +30,16 @@
 
 (reg-event-db :articles.new/init  (fn [db _] (-> db
                                                  (assoc :form {:save-type :draft})
-                                                 (assoc :error {})
-                                                 ;; TODO: change data place (prefer inside data)
-                                                 (assoc :preview? false))))
+                                                 (assoc-in [:data :preview?] false))))
 (reg-event-db :articles.edit/init (fn [db _] (-> db
                                                  (assoc :form {})
                                                  (assoc :error {})
-                                                 ;; TODO: change data place (prefer inside data)
-                                                 (assoc :preview? false))))
+                                                 (assoc-in [:data :preview?] false))))
 
 (reg-event-db :articles/form.title     (fn [db [_ title]] (assoc-in db [:form :title] title)))
 (reg-event-db :articles/form.content   (fn [db [_ content]] (assoc-in db [:form :content] content)))
 (reg-event-db :articles/form.save-type (fn [db [_ save-type]] (assoc-in db [:form :save-type] save-type)))
-;; TODO: change data place (prefer inside data)
-(reg-event-db :articles/preview        (fn [db [_ preview?]] (assoc db :preview? preview?)))
+(reg-event-db :articles/data.preview?  (fn [db [_ preview?]] (assoc-in db [:data :preview?] preview?)))
 (reg-event-db :articles/form.file      (fn [db [_ file-info]] (update-in db [:form :content] #(str % "\n\n" file-info))))
 
 (reg-event-db :profile/form.password (fn [db [_ password]] (assoc-in db [:form :password] password)))

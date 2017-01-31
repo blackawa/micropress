@@ -8,14 +8,14 @@
   (reagent/create-class
    {:component-will-mount
     (fn []
-      (auth-token/check)
       (dispatch [:init-except-route])
+      (auth-token/check)
       (editor/fetch-by-token))
     :reagent-render
     (fn []
-      (let [form (subscribe [:editor.form])
+      (let [form (subscribe [:form])
             error (subscribe [:error])
-            data (subscribe [:profile.data])]
+            data (subscribe [:data])]
         [:div
          [:p.error (:error @error)]
          [:form.ui.form

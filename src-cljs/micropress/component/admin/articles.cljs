@@ -11,11 +11,12 @@
   (reagent/create-class
    {:component-will-mount
     (fn []
+      (dispatch [:init-except-route])
       (auth-token/check)
       (article/fetch-all))
     :reagent-render
     (fn []
-      (let [articles (subscribe [:admin.articles])]
+      (let [articles (subscribe [:data])]
         [:div
          [:a.ui.green.button {:href "/admin/articles/new"} "create new article"]
          [:table.ui.celled.table
@@ -35,10 +36,10 @@
   (reagent/create-class
    {:reagent-render
     (fn []
-      (let [form (subscribe [:admin.articles.new.form])
-            error (subscribe [:admin.articles.new.error])
-            preview? (subscribe [:admin.articles.preview])
-            preview-on-click (fn [preview?] (dispatch [:articles/preview preview?]))]
+      (let [form (subscribe [:form])
+            error (subscribe [:error])
+            data (subscribe [:data])
+            preview-on-click (fn [preview?] (dispatch [:articles/data.preview? preview?]))]
         [:div
          [:p.error @error]
          [:form.ui.form
@@ -50,18 +51,18 @@
                     :value (:title @form)
                     :on-change #(dispatch [:articles/form.title (-> % .-target .-value)])}]]
           [:div.field
-           (when @preview?
+           (when (:preview? @data)
              [:div.ui.top.attached.tabular.menu
               [:span.tab.item {:on-click #(preview-on-click false)} "raw"]
               [:span.tab.active.item {:on-click #(preview-on-click true)} "preview"]])
-           (when @preview?
+           (when (:preview? @data)
              [:div.ui.buttom.attached.segment
               [:div {:dangerouslySetInnerHTML {:__html (md->html (:content @form))}}]])
-           (when-not @preview?
+           (when-not (:preview? @data)
              [:div.ui.top.attached.tabular.menu
               [:span.tab.active.item {:on-click #(preview-on-click false)} "raw"]
               [:span.tab.item {:on-click #(preview-on-click true)} "preview"]])
-           (when-not @preview?
+           (when-not (:preview? @data)
              [:div.ui.bottom.attached.segment
               [:textarea {:id "content"
                           :name "content"
@@ -80,7 +81,7 @@
            [:span.four.wide.field [button]]]]]))}))
 
 (defn- new-article-dropdown []
-  (let [form (subscribe [:admin.articles.new.form])]
+  (let [form (subscribe [:form])]
     [:select
      {;; use (or) to suppress error to use nil for value of <select>
       :value (or (:save-type @form) "")
@@ -89,13 +90,14 @@
      [:option {:value :published} "published"]]))
 
 (defn- new-article-button []
-  (let [form (subscribe [:admin.articles.new.form])]
+  (let [form (subscribe [:form])]
     [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/save @form))} "create"]))
 
 (defn new-article []
   (reagent/create-class
    {:component-will-mount
     (fn []
+      (dispatch [:init-except-route])
       (auth-token/check)
       (dispatch [:articles.new/init]))
     :reagent-render
@@ -105,7 +107,7 @@
        new-article-button])}))
 
 (defn- edit-article-dropdown []
-  (let [form (subscribe [:admin.articles.new.form])]
+  (let [form (subscribe [:form])]
     [:select
      {;; use (or) to suppress error to use nil for value of <select>
       :value (or (:save-type @form) "")
@@ -115,7 +117,7 @@
      [:option {:value :withdrawn} "withdrawn"]]))
 
 (defn- edit-article-button []
-  (let [form (subscribe [:admin.articles.new.form])]
+  (let [form (subscribe [:form])]
     [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/put @form))} "update"]))
 
 (defn article []
@@ -123,6 +125,7 @@
    {:component-will-mount
     (fn []
       (let [[_ id] @(subscribe [:route])]
+        (dispatch [:init-except-route])
         (auth-token/check)
         (dispatch [:articles.edit/init])
         (article/fetch-by-id id)))
