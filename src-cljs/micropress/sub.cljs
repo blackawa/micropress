@@ -48,3 +48,7 @@
 (reg-sub
  :editor.form
  (fn [db _] (:form db)))
+
+(reg-sub
+ :profile.data
+ (fn [db _] (:data db)))

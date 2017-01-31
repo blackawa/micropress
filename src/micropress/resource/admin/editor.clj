@@ -5,9 +5,9 @@
             [micropress.resource.base :refer [authenticated]]))
 
 (defn- conflict? [ctx]
-  (let [id (-> ctx :micropress.resource.base/params :id)
-        data (:micropress.resource.base/data ctx)]
-    (if (= (str id) (str (:id data)))
+  (let [id-from-params (-> ctx :micropress.resource.base/params :id)
+        id-from-token (:micropress.resource.base/editor-id ctx)]
+    (if (= (str id-from-params) (str id-from-token))
       false
       [true {::error "invalid request"}])))
 
@@ -19,6 +19,7 @@
   (let [data (:micropress.resource.base/data ctx)
         editor-id (:micropress.resource.base/editor-id ctx)]
     (-> data
+        (assoc :id editor-id)
         (update :password h/encrypt)
         (editor/update-editor! {:connection db}))))
 
