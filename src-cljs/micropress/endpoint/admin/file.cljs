@@ -20,7 +20,7 @@
              (fn [xhrio]
                (let [file-info (-> xhrio .getResponseText read-string :file-info)]
                  ;; TODO: clear input tag when upload succeeded.
-                 (dispatch [:admin.file.upload (str "![" (:file-name file-info) "](" (:file-path file-info) ")")])))
+                 (dispatch [:articles/form.file (str "![" (:file-name file-info) "](" (:file-path file-info) ")")])))
              :body
              ;; have to generate FormData to send multipart form
              (generate-form-data {:file file})
@@ -28,7 +28,7 @@
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
                  401 (accountant/navigate! "/admin/login")
-                 (dispatch [:admin.file.upload.error "Sorry! Unexpected error occurred. Try again later..."])))
+                 (dispatch [:error "Sorry! Unexpected error occurred. Try again later..."])))
              :headers {;; you should not set "Content-Type" key when you send FormData
                        "Authorization" (str "Bearer " auth-token)})
     (accountant/navigate! "/admin/login")))

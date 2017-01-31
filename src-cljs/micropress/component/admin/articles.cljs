@@ -38,7 +38,7 @@
       (let [form (subscribe [:admin.articles.new.form])
             error (subscribe [:admin.articles.new.error])
             preview? (subscribe [:admin.articles.preview])
-            preview-on-click (fn [preview?] (dispatch [:admin.articles.preview preview?]))]
+            preview-on-click (fn [preview?] (dispatch [:articles/preview preview?]))]
         [:div
          [:p.error @error]
          [:form.ui.form
@@ -48,7 +48,7 @@
                     :name "title"
                     :placeholder "title"
                     :value (:title @form)
-                    :on-change #(dispatch [:admin.articles.new.title (-> % .-target .-value)])}]]
+                    :on-change #(dispatch [:articles/form.title (-> % .-target .-value)])}]]
           [:div.field
            (when @preview?
              [:div.ui.top.attached.tabular.menu
@@ -67,7 +67,7 @@
                           :name "content"
                           :placeholder "content"
                           :value (:content @form)
-                          :on-change #(dispatch [:admin.articles.new.content (-> % .-target .-value)])}]])]
+                          :on-change #(dispatch [:articles/form.content (-> % .-target .-value)])}]])]
           [:p.fields
            [:span.eight.wide.field
             [:label {:for "image"} "image"]
@@ -84,7 +84,7 @@
     [:select
      {;; use (or) to suppress error to use nil for value of <select>
       :value (or (:save-type @form) "")
-      :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
+      :on-change #(dispatch [:articles/form.save-type (keyword (-> % .-target .-value))])}
      [:option {:value :draft} "draft"]
      [:option {:value :published} "published"]]))
 
@@ -97,7 +97,7 @@
    {:component-will-mount
     (fn []
       (auth-token/check)
-      (dispatch [:init-new-article-db]))
+      (dispatch [:articles.new/init]))
     :reagent-render
     (fn []
       [article-form
@@ -109,14 +109,14 @@
     [:select
      {;; use (or) to suppress error to use nil for value of <select>
       :value (or (:save-type @form) "")
-      :on-change #(dispatch [:admin.articles.new.save-type (keyword (-> % .-target .-value))])}
+      :on-change #(dispatch [:articles/form.save-type (keyword (-> % .-target .-value))])}
      [:option {:value :draft} "draft"]
      [:option {:value :published} "published"]
      [:option {:value :withdrawn} "withdrawn"]]))
 
 (defn- edit-article-button []
   (let [form (subscribe [:admin.articles.new.form])]
-    [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/save @form))} "update"]))
+    [:button.ui.green.button {:on-click #(do (.preventDefault %) (article/put @form))} "update"]))
 
 (defn article []
   (reagent/create-class
@@ -124,7 +124,7 @@
     (fn []
       (let [[_ id] @(subscribe [:route])]
         (auth-token/check)
-        (dispatch [:init-edit-article-db])
+        (dispatch [:articles.edit/init])
         (article/fetch-by-id id)))
     :reagent-render
     (fn []

@@ -9,7 +9,7 @@
    {:component-will-mount
     (fn []
       (auth-token/check)
-      (dispatch [:init-editor-db])
+      (dispatch [:init-except-route])
       (editor/fetch-by-token))
     :reagent-render
     (fn []
@@ -24,5 +24,5 @@
            [:input {:type "password"
                     :placeholder "password"
                     :value (:password @form)
-                    :on-change #(dispatch [:login.form.password (-> % .-target .-value)])}]]
+                    :on-change #(dispatch [:profile/form.password (-> % .-target .-value)])}]]
           [:button.ui.green.button {:type "submit" :on-click #(do (.preventDefault %) (editor/put(:id @data) @form))} "update"]]]))}))

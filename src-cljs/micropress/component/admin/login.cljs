@@ -10,7 +10,7 @@
    {:component-will-mount
     (fn []
       (auth-token/check :success-handler (fn [_] (accountant/navigate! "/admin/articles")))
-      (dispatch [:init-login-db]))
+      (dispatch [:init-except-route]))
     :reagent-render
     (fn []
       (let [form (subscribe [:login.form])
@@ -22,9 +22,9 @@
           [:p.inline.field [:label "username" [:input {:type "text"
                                                        :placeholder "username"
                                                        :value (:username @form)
-                                                       :on-change #(dispatch [:login.form.username (-> % .-target .-value)])}]]]
+                                                       :on-change #(dispatch [:login/form.username (-> % .-target .-value)])}]]]
           [:p.inline.field [:label "password" [:input {:type "password"
                                                        :placeholder "password"
                                                        :value (:password @form)
-                                                       :on-change #(dispatch [:login.form.password (-> % .-target .-value)])}]]]
+                                                       :on-change #(dispatch [:login/form.password (-> % .-target .-value)])}]]]
           [:button.ui.teal.button {:type "submit" :on-click #(do (.preventDefault %) (authenticate! @form))} "Login"]]]))}))

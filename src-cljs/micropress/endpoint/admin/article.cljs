@@ -11,7 +11,7 @@
     (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/articles")
              :get
              (fn [xhrio]
-               (dispatch [:admin.articles (read-string (.getResponseText xhrio))]))
+               (dispatch [:data (read-string (.getResponseText xhrio))]))
              :error-handler
              (fn [e xhrio]
                (when (= 401 (.getStatus xhrio))
@@ -39,7 +39,7 @@
     (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/articles/" id)
              :get
              (fn [xhrio]
-               (dispatch [:admin.article (read-string (.getResponseText xhrio))]))
+               (dispatch [:form (read-string (.getResponseText xhrio))]))
              :error-handler
              (fn [e xhrio]
                (when (= 401 (.getStatus xhrio))
@@ -57,7 +57,7 @@
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
                  401 (accountant/navigate! "/admin/login")
-                 409 (dispatch [:admin.articles.edit.error (.getResponseText xhrio)])
+                 409 (dispatch [:error (.getResponseText xhrio)])
                  (js/console.err "invalid status")))
              :body (str form)
              :headers {"Content-Type" "application/edn"

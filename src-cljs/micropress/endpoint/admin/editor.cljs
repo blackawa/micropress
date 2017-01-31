@@ -11,7 +11,7 @@
     (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/editors")
              :get
              (fn [xhrio]
-               (dispatch [:profile.data (read-string (.getResponseText xhrio))]))
+               (dispatch [:data (read-string (.getResponseText xhrio))]))
              :error-handler
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
@@ -27,7 +27,7 @@
     (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/editors/" id)
              :put
              (fn [xhrio]
-               (dispatch [:form.clear])
+               (dispatch [:init-form])
                ;; TODO: success flash message
                )
              :error-handler
