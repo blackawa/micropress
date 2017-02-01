@@ -19,18 +19,19 @@
       (let [articles (subscribe [:data])]
         [:div
          [:a.ui.green.button {:href "/admin/articles/new"} "create new article"]
-         [:table.ui.celled.table
-          [:thead
-           [:tr [:th "id"] [:th "title"] [:th "status"]]]
-          [:tbody
-           (map
-            (fn [a]
-              [:tr
-               {:key (:id a)}
-               [:td (:id a)]
-               [:td [:a {:href (str "/admin/articles/" (:id a))} (:title a)]]
-               [:td (:article_status_id a)]])
-            @articles)]]]))}))
+         (when @articles
+           [:table.ui.celled.table
+            [:thead
+             [:tr [:th "id"] [:th "title"] [:th "status"]]]
+            [:tbody
+             (map
+              (fn [a]
+                [:tr
+                 {:key (:id a)}
+                 [:td (:id a)]
+                 [:td [:a {:href (str "/admin/articles/" (:id a))} (:title a)]]
+                 [:td (:article_status_id a)]])
+              @articles)]])]))}))
 
 (defn- article-form [dropdown button]
   (reagent/create-class
