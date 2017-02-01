@@ -21,15 +21,16 @@
   (let [error (::error ctx)]
     (str {:error error})))
 
-(defn- save-type [article-status-id]
-  (condp = article-status-id
-    1 :draft
-    2 :published
-    3 :withdrawn))
-
-(defn- handle-ok [ctx db]
+(defn- exists? [ctx db]
   (let [id (-> ctx :micropress.resource.base/params :id)
         article (first (article/find-by-id {:id (read-string id)} {:connection db}))]
+    (if (empty? article)
+      false
+      [true {::data article}])))
+
+(defn- handle-ok [ctx db]
+  (let [article (::data ctx)
+        save-type #(condp = % 1 :draft 2 :published 3 :withdrawn)]
     (-> article
         (assoc :save-type (save-type (:article_status_id article)))
         (dissoc :article_status_id)
@@ -59,5 +60,6 @@
    :available-media-types ["application/edn"]
    :conflict? conflict?
    :handle-conflict handle-conflict
+   :exists? #(exists? % db)
    :handle-ok (fn [ctx] (handle-ok ctx db))
    :put! (fn [ctx] (put! ctx db))))

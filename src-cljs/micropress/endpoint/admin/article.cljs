@@ -42,8 +42,9 @@
                (dispatch [:form (read-string (.getResponseText xhrio))]))
              :error-handler
              (fn [e xhrio]
-               (when (= 401 (.getStatus xhrio))
-                 (accountant/navigate! "/login")))
+               (condp = (.getStatus xhrio)
+                 401 (accountant/navigate! "/login")
+                 404 (dispatch [:route [:not-found]])))
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
 
