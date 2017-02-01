@@ -4,8 +4,9 @@ insert into editor
 values
 (:username, :password, :editor_status_id)
 
--- name: find-by-username
-select * from editor where username = :username
+-- name: find-active-by-username
+select * from editor
+where username = :username and editor_status_id = 2
 
 -- name: update-editor!
 update editor set
