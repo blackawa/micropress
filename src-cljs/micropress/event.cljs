@@ -2,10 +2,11 @@
   (:require [re-frame.core :refer [reg-event-fx reg-event-db]]))
 
 ;; === Schema Definition ==================================
-;; {:route {} # routing
-;;  :data  {} # data to display
-;;  :form  {} # form data
-;;  :error {} # error response
+;; {:loaded? bool # indicate if page is loaded or not.
+;;  :route {}     # routing
+;;  :data  {}     # data to display
+;;  :form  {}     # form data
+;;  :error {}     # error response
 ;;  :flush {:success []   # success message
 ;;          :failure []}} # failure message
 ;; ========================================================

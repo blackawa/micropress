@@ -4,4 +4,6 @@
 (defn not-found []
   (reagent/create-class
    {:reagent-render
-    (fn [] [:div])}))
+    (fn [] [:div
+            [:h1 "Page not found!"]
+            [:a {:href "/"} "Restart from top page."]])}))

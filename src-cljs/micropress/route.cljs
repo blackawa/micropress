@@ -2,9 +2,10 @@
   (:require [secretary.core :refer-macros [defroute]]
             [re-frame.core :refer [dispatch subscribe]]
             [reagent.core :as reagent]
-            [micropress.component.not-found :as not-found]
-            [micropress.component.admin.login :as admin-login]
-            [micropress.component.admin.articles :as admin-articles]
+            [micropress.component.not-found :refer [not-found]]
+            [micropress.component.admin.login :refer [login]]
+            [micropress.component.admin.articles :as articles]
+            [micropress.component.admin.editors :refer [editors]]
             [micropress.component.admin.profile :refer [profile]]))
 
 ;; url ===> route ============================
@@ -18,6 +19,8 @@
   (dispatch [:route [:articles.new]]))
 (defroute "/admin/articles/:id" [id]
   (dispatch [:route [:article id]]))
+(defroute "/admin/editors" []
+  (dispatch [:route [:editors]]))
 (defroute "/admin/profile" []
   (dispatch [:route [:profile]]))
 
@@ -25,14 +28,16 @@
 ;; inner-view ================================
 (defmulti current-view first)
 (defmethod current-view :login []
-  [admin-login/login])
+  [login])
 (defmethod current-view :articles []
-  [admin-articles/articles])
+  [articles/articles])
 (defmethod current-view :articles.new []
-  [admin-articles/new-article])
+  [articles/new-article])
 (defmethod current-view :article []
-  [admin-articles/article])
+  [articles/article])
+(defmethod current-view :editors []
+  [editors])
 (defmethod current-view :profile []
   [profile])
 (defmethod current-view :default []
-  [not-found/not-found])
+  [not-found])

@@ -16,6 +16,10 @@
               [:a.active.item {:href "/admin/articles"} "Articles"]
               [:a.item {:href "/admin/articles"} "Articles"]))
           (when (not (= :login (first @route)))
+            (if (not (empty? (re-find #"^:editor.*" (str (first @route)))))
+              [:a.active.item {:href "/admin/editors"} "Editors"]
+              [:a.item {:href "/admin/editors"} "Editors"]))
+          (when (not (= :login (first @route)))
             (if (not (empty? (re-find #"^:profile.*" (str (first @route)))))
               [:a.active.item {:href "/admin/profile"} "Profile"]
               [:a.item {:href "/admin/profile"} "Profile"]))]
