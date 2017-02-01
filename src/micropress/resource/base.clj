@@ -6,7 +6,10 @@
 ;; それを必要な分だけ繰り返せばmalformed?が分かるようにしてDRYにしたい.
 ;; malformed?などを共通関数に切り出すと、 ::data などが次の関数に渡せなくなる.
 (defn- malformed? "認証トークンと(post / putなら)リクエストボディのパースを行う." [ctx]
-  (let [auth-token (second (clojure.string/split (-> ctx (get-in [:request :headers]) (get "authorization")) #"\s"))
+  (let [auth-token (some-> ctx
+                           (get-in [:request :headers "authorization"])
+                           (clojure.string/split #"\s")
+                           second)
         params (-> ctx (get-in [:request :params]))
         body (when (#{:post :put} (get-in ctx [:request :request-method])) (-> ctx (get-in [:request :body]) slurp))]
     (if auth-token
