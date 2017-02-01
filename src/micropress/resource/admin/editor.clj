@@ -27,7 +27,7 @@
   (let [data (:micropress.resource.base/data ctx)]
     (-> data
         (update :password h/encrypt)
-        (assoc :editor_status_id 2)
+        (assoc :editor_status_id 1)
         (editor/create-editor! {:connection db}))))
 
 (defn editor [db]
