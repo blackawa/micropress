@@ -8,14 +8,16 @@
    {:reagent-render
     (let [route (subscribe [:route])]
       (fn []
-        [:div.ui.container
-         [:nav
-          (when (empty? (re-find #"^:login.*" (str (first @route))))
-            [:div.ui.top.attached.tabular.menu
-             (if (not (empty? (re-find #"^:article.*" (str (first @route)))))
-               [:a.active.item {:href "/admin/articles"} "Articles"]
-               [:a.item {:href "/admin/articles"} "Articles"])
-             (if (= :profile (first @route))
-               [:a.active.item {:href "/admin/profile"} "Profile"]
-               [:a.item {:href "/admin/profile"} "Profile"])])
-          [:section.ui.bottom.attached.segment [current-view @route]]]]))}))
+        [:div
+         [:header.ui.fixed.inverted.teal.menu
+          [:a.ui.inverted.header.item {:href "/"} "console | micropress"]
+          (when (not (= :login (first @route)))
+            (if (not (empty? (re-find #"^:article.*" (str (first @route)))))
+              [:a.active.item {:href "/admin/articles"} "Articles"]
+              [:a.item {:href "/admin/articles"} "Articles"]))
+          (when (not (= :login (first @route)))
+            (if (not (empty? (re-find #"^:profile.*" (str (first @route)))))
+              [:a.active.item {:href "/admin/profile"} "Profile"]
+              [:a.item {:href "/admin/profile"} "Profile"]))]
+         [:div.ui.container
+          [current-view @route]]]))}))

@@ -15,7 +15,7 @@
              :error-handler
              (fn [e xhrio]
                (when (= 401 (.getStatus xhrio))
-                 (accountant/navigate! "/admin/login")))
+                 (accountant/navigate! "/login")))
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
 
@@ -29,7 +29,7 @@
              :error-handler
              (fn [e xhrio]
                (when (= 401 (.getStatus xhrio))
-                 (accountant/navigate! "/admin/login")))
+                 (accountant/navigate! "/login")))
              :body (str form)
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
@@ -43,7 +43,7 @@
              :error-handler
              (fn [e xhrio]
                (when (= 401 (.getStatus xhrio))
-                 (accountant/navigate! "/admin/login")))
+                 (accountant/navigate! "/login")))
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
 
@@ -56,7 +56,7 @@
              :error-handler
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
-                 401 (accountant/navigate! "/admin/login")
+                 401 (accountant/navigate! "/login")
                  409 (dispatch [:error (.getResponseText xhrio)])
                  (js/console.err "invalid status")))
              :body (str form)

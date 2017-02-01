@@ -10,7 +10,7 @@
 ;; url ===> route ============================
 (defroute "/" []
   (dispatch [:route [:login]]))
-(defroute "/admin/login" []
+(defroute "/login" []
   (dispatch [:route [:login]]))
 (defroute "/admin/articles" []
   (dispatch [:route [:articles]]))

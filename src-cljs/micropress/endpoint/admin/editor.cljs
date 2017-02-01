@@ -15,10 +15,10 @@
              :error-handler
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
-                 401 (accountant/navigate! "/admin/login")
-                 404 (accountant/navigate! "/admin/login")
+                 401 (accountant/navigate! "/login")
+                 404 (accountant/navigate! "/login")
                  (do (js/console.err "unexpected error")
-                     (accountant/navigate! "/admin/login"))))
+                     (accountant/navigate! "/login"))))
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
 
@@ -33,10 +33,10 @@
              :error-handler
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
-                 401 (accountant/navigate! "/admin/login")
-                 404 (accountant/navigate! "/admin/login")
+                 401 (accountant/navigate! "/login")
+                 404 (accountant/navigate! "/login")
                  (do (js/console.err "unexpected error")
-                     (accountant/navigate! "/admin/login"))))
+                     (accountant/navigate! "/login"))))
              :body (str data)
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))

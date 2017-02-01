@@ -27,8 +27,8 @@
              :error-handler
              (fn [e xhrio]
                (condp = (.getStatus xhrio)
-                 401 (accountant/navigate! "/admin/login")
+                 401 (accountant/navigate! "/login")
                  (dispatch [:error "Sorry! Unexpected error occurred. Try again later..."])))
              :headers {;; you should not set "Content-Type" key when you send FormData
                        "Authorization" (str "Bearer " auth-token)})
-    (accountant/navigate! "/admin/login")))
+    (accountant/navigate! "/login")))

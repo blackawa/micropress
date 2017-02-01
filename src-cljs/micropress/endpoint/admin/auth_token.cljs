@@ -13,7 +13,7 @@
              :error-handler
              (fn [e xhrio]
                (when (= 401 (.getStatus xhrio))
-                 (accountant/navigate! "/admin/login")))
+                 (accountant/navigate! "/login")))
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})
-    (accountant/navigate! "/admin/login")))
+    (accountant/navigate! "/login")))
