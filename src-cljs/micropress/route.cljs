@@ -42,4 +42,4 @@
 (defmethod current-view :not-found []
   [not-found])
 (defmethod current-view :default []
-  [not-found])
+  [:div])
