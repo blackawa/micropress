@@ -2,6 +2,7 @@
   (:require [reagent.core :as reagent]
             [re-frame.core :refer [dispatch subscribe]]
             [micropress.endpoint.admin.auth-token :as auth-token]
+            [micropress.endpoint.admin.profile :as profile]
             [micropress.endpoint.admin.editor :as editor]))
 
 (defn profile []
@@ -10,7 +11,7 @@
     (fn []
       (dispatch [:init-except-route])
       (auth-token/check)
-      (editor/fetch-by-token))
+      (profile/fetch-by-token))
     :reagent-render
     (fn []
       (let [form (subscribe [:form])

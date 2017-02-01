@@ -1,4 +1,4 @@
-(ns micropress.resource.admin.editors
+(ns micropress.resource.admin.profile
   (:require [buddy.hashers :as h]
             [liberator.core :refer [resource]]
             [micropress.repository.editor :as editor]
@@ -6,10 +6,11 @@
 
 (defn- handle-ok [ctx db]
   (let [editor-id (:micropress.resource.base/editor-id ctx)]
-    (->> (editor/find-all {} {:connection db})
-         (map #(dissoc % :password)))))
+    (-> (editor/find-by-id {:id editor-id} {:connection db})
+        first
+        (dissoc :password))))
 
-(defn editors [db]
+(defn profile [db]
   (resource
    (authenticated db)
    :allowed-methods [:get]

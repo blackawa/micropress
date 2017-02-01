@@ -23,11 +23,19 @@
         (update :password h/encrypt)
         (editor/update-editor! {:connection db}))))
 
+(defn- post! [ctx db]
+  (let [data (:micropress.resource.base/data ctx)]
+    (-> data
+        (update :password h/encrypt)
+        (assoc :editor_status_id 1)
+        (editor/create-editor! {:connection db}))))
+
 (defn editor [db]
   (resource
    (authenticated db)
-   :allowed-methods [:put]
+   :allowed-methods [:put :post]
    :available-media-types ["application/edn"]
    :conflict? conflict?
    :handle-conflict handle-conflict
-   :put! #(put! % db)))
+   :put! #(put! % db)
+   :post! #(post! % db)))

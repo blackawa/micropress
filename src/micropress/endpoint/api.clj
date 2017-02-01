@@ -1,25 +1,25 @@
 (ns micropress.endpoint.api
   (:require [compojure.core :refer :all]
-            [micropress.resource.editor :refer [editor]]
             [micropress.resource.customer.article :as customer-article]
             [micropress.resource.customer.articles :as customer-articles]
             [micropress.resource.admin.auth-token :refer [auth-token]]
             [micropress.resource.admin.articles :as admin-articles]
             [micropress.resource.admin.article :as admin-article]
             [micropress.resource.admin.authentication :refer [authentication]]
-            [micropress.resource.admin.editors :as admin-editors]
-            [micropress.resource.admin.editor :as admin-editor]
-            [micropress.resource.admin.file :as file]))
+            [micropress.resource.admin.editors :refer [editors]]
+            [micropress.resource.admin.editor :refer [editor]]
+            [micropress.resource.admin.file :refer [file]]
+            [micropress.resource.admin.profile :refer [profile]]))
 
 (defn endpoint [{{db :spec} :db}]
   (context "/api" _
-           (ANY "/editor" _ (editor db))
            (ANY "/articles" _ (customer-articles/articles db))
            (ANY "/articles/:id" _ (customer-article/article db))
-           (ANY "/admin/editors" _ (admin-editors/editors db))
-           (ANY "/admin/editors/:id" _ (admin-editor/editor db))
+           (ANY "/admin/editors" _ (editors db))
+           (ANY "/admin/editors/:id" _ (editor db))
            (ANY "/admin/auth-token" _ (auth-token db))
            (ANY "/admin/authentication" _ (authentication db))
            (ANY "/admin/articles" _ (admin-articles/articles db))
            (ANY "/admin/articles/:id" _ (admin-article/article db))
-           (ANY "/admin/file" _ (file/file db))))
+           (ANY "/admin/file" _ (file db))
+           (ANY "/admin/profile" _ (profile db))))
