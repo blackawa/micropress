@@ -11,9 +11,9 @@
                            (clojure.string/split #"\s")
                            second)
         params (-> ctx (get-in [:request :params]))
-        body (when (#{:post :put} (get-in ctx [:request :request-method])) (-> ctx (get-in [:request :body]) slurp))]
+        body (when (#{:post :put} (get-in ctx [:request :request-method])) (some-> ctx (get-in [:request :body]) slurp))]
     (if auth-token
-      (if body
+      (if (not (empty? body))
         (try
           [false {::auth-token auth-token ::data (read-string body) ::params params}]
           (catch RuntimeException e
