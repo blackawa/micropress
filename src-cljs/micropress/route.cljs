@@ -1,11 +1,11 @@
 (ns micropress.route
   (:require [secretary.core :refer-macros [defroute]]
-            [re-frame.core :refer [dispatch subscribe]]
+            [re-frame.core :refer [dispatch]]
             [reagent.core :as reagent]
             [micropress.component.not-found :refer [not-found]]
             [micropress.component.admin.login :refer [login]]
             [micropress.component.admin.articles :as articles]
-            [micropress.component.admin.editors :refer [editors]]
+            [micropress.component.admin.editors :refer [editors new-editor]]
             [micropress.component.admin.profile :refer [profile]]))
 
 ;; url ===> route ============================
@@ -21,6 +21,8 @@
   (dispatch [:route [:article id]]))
 (defroute "/admin/editors" []
   (dispatch [:route [:editors]]))
+(defroute "/admin/editors/new" []
+  (dispatch [:route [:editors.new]]))
 (defroute "/admin/profile" []
   (dispatch [:route [:profile]]))
 
@@ -37,6 +39,8 @@
   [articles/article])
 (defmethod current-view :editors []
   [editors])
+(defmethod current-view :editors.new []
+  [new-editor])
 (defmethod current-view :profile []
   [profile])
 (defmethod current-view :not-found []

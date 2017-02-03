@@ -59,7 +59,7 @@
                (condp = (.getStatus xhrio)
                  401 (accountant/navigate! "/login")
                  409 (dispatch [:error (.getResponseText xhrio)])
-                 (js/console.err "invalid status")))
+                 (js/console.error "invalid status")))
              :body (str form)
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))

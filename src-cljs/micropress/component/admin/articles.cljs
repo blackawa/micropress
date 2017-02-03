@@ -19,7 +19,10 @@
       (let [articles (subscribe [:data])]
         [:div
          [:a.ui.green.button {:href "/admin/articles/new"} "create new article"]
-         (when @articles
+         (if (empty? @articles)
+           [:div
+            [:h1.ui.center.aligned.header
+             [:a {:href "/admin/articles/new"} "create your first article."]]]
            [:table.ui.celled.table
             [:thead
              [:tr [:th "id"] [:th "title"] [:th "status"]]]
