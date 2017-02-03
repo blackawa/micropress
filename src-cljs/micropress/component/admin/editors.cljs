@@ -29,3 +29,16 @@
                  [:td (:username e)]
                  [:td (:editor_status_id e)]])
               @data)]])]))}))
+
+(defn new-editor []
+  (reagent/create-class
+   {:component-will-mount
+    (fn []
+      (dispatch [:init-except-route])
+      (auth-token/check))
+    :reagent-render
+    (fn []
+      [:div
+       [:button.ui.green.button "publish invite code"]
+       [:ul
+        [:li "http://hogehoge.com/invitation/1234-5678"]]])}))
