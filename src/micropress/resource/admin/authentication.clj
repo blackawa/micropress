@@ -24,7 +24,7 @@
 
 (defn- processable? [ctx db]
   (let [{:keys [username password]} (::data ctx)
-        editor (first (editor/find-by-username {:username username} {:connection db}))]
+        editor (first (editor/find-active-by-username {:username username} {:connection db}))]
     (if (nil? editor)
       [false {::error "invalid username or password"}]
       (if (h/check password (:password editor))
