@@ -27,4 +27,5 @@
    (GET "/admin/editors" [] (index))
    (GET "/admin/editors/new" [] (index))
    (GET "/admin/editors/:id" [] (index))
-   (GET "/admin/profile" [] (index))))
+   (GET "/admin/profile" [] (index))
+   (GET "/invitation/:token" [] (index))))

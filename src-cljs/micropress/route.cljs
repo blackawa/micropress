@@ -4,6 +4,7 @@
             [reagent.core :as reagent]
             [micropress.component.not-found :refer [not-found]]
             [micropress.component.admin.login :refer [login]]
+            [micropress.component.public.invitation :refer [invitation]]
             [micropress.component.admin.articles :as articles]
             [micropress.component.admin.editors :refer [editors new-editor]]
             [micropress.component.admin.profile :refer [profile]]))
@@ -13,6 +14,8 @@
   (dispatch [:route [:login]]))
 (defroute "/login" []
   (dispatch [:route [:login]]))
+(defroute "/invitation/:token" [token]
+  (dispatch [:route [:invitation token]]))
 (defroute "/admin/articles" []
   (dispatch [:route [:articles]]))
 (defroute "/admin/articles/new" []
@@ -31,6 +34,8 @@
 (defmulti current-view first)
 (defmethod current-view :login []
   [login])
+(defmethod current-view :invitation []
+  [invitation])
 (defmethod current-view :articles []
   [articles/articles])
 (defmethod current-view :articles.new []

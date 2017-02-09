@@ -6,7 +6,8 @@
             [micropress.resource.admin.articles :as admin-articles]
             [micropress.resource.admin.article :as admin-article]
             [micropress.resource.admin.authentication :refer [authentication]]
-            [micropress.resource.admin.invitations :refer [invitations]]
+            [micropress.resource.admin.invitations :as admin-invitations]
+            [micropress.resource.public.invitation :as public-invitation]
             [micropress.resource.admin.editors :refer [editors]]
             [micropress.resource.admin.editor :refer [editor]]
             [micropress.resource.admin.file :refer [file]]
@@ -16,7 +17,8 @@
   (context "/api" _
            (ANY "/articles" _ (customer-articles/articles db))
            (ANY "/articles/:id" _ (customer-article/article db))
-           (ANY "/admin/invitations" _ (invitations db))
+           (ANY "/invitations/:token" _ (public-invitation/invitation db))
+           (ANY "/admin/invitations" _ (admin-invitations/invitations db))
            (ANY "/admin/editors" _ (editors db))
            (ANY "/admin/editors/:id" _ (editor db))
            (ANY "/admin/auth-token" _ (auth-token db))

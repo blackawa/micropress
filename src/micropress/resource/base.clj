@@ -34,3 +34,21 @@
   {:malformed? malformed?
    :handle-malformed handle-malformed
    :authorized? #(authorized? % db)})
+
+(defn- public-malformed? "認証トークンと(post / putなら)リクエストボディのパースを行う." [ctx]
+  (let [params (-> ctx (get-in [:request :params]))
+        body (when (#{:post :put} (get-in ctx [:request :request-method])) (some-> ctx (get-in [:request :body]) slurp))]
+    (if (not (empty? body))
+      (try
+        [false {::data (read-string body) ::params params}]
+        (catch RuntimeException e
+          [true {::error "invalid body"}]))
+      [false {::params params}])))
+
+(defn- handle-malformed [ctx]
+  (let [error (::error ctx)]
+    (str {:error error})))
+
+(defn public []
+  {:malformed? public-malformed?
+   :handle-malformed handle-malformed})

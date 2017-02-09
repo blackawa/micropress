@@ -23,3 +23,12 @@
                      (accountant/navigate! "/login"))))
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
+
+(defn check [token]
+  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/invitations/" token)
+           :get
+           (fn [xhrio])
+           :error-handler
+           (fn [_ xhrio]
+             (dispatch [:error (read-string (.getResponseText xhrio))]))
+           :headers {"Content-Type" "application/edn"}))
