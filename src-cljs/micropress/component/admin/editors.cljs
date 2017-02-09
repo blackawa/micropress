@@ -2,7 +2,8 @@
   (:require [reagent.core :as reagent]
             [re-frame.core :refer [dispatch subscribe]]
             [micropress.endpoint.admin.auth-token :as auth-token]
-            [micropress.endpoint.admin.editor :as editor]))
+            [micropress.endpoint.admin.editor :as editor]
+            [micropress.endpoint.admin.invitation :as invitation]))
 
 (defn editors []
   (reagent/create-class
@@ -41,6 +42,8 @@
       (let [data (subscribe [:data])]
         [:div
          [:button.ui.green.button
-          {:on-click #()}
+          {:on-click #(invitation/save)}
           "publish invititation code"]
-         [:p]]))}))
+         (when (not (empty? @data))
+           [:div "Tell new comer below url"
+            [:p @data]])]))}))
