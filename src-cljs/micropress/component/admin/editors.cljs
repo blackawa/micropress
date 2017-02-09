@@ -38,7 +38,9 @@
       (auth-token/check))
     :reagent-render
     (fn []
-      [:div
-       [:button.ui.green.button "publish invite code"]
-       [:ul
-        [:li "http://hogehoge.com/invitation/1234-5678"]]])}))
+      (let [data (subscribe [:data])]
+        [:div
+         [:button.ui.green.button
+          {:on-click #()}
+          "publish invititation code"]
+         [:p]]))}))
