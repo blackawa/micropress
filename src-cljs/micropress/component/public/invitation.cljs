@@ -9,10 +9,9 @@
   (reagent/create-class
    {:component-will-mount
     (fn []
-      (let [route (dispatch [:route])]
+      (let [route (subscribe [:route])]
         (dispatch [:init-except-route])
-        (auth-token/check :success-handler (fn [_] (accountant/navigate! "/admin/articles")))
-        (invitation/check (second @route))))
+        (invitation/check @route)))
     :reagent-render
     (fn []
       (let [form (subscribe [:form])

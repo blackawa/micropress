@@ -24,11 +24,11 @@
              :headers {"Content-Type" "application/edn"
                        "Authorization" (str "Bearer " auth-token)})))
 
-(defn check [token]
-  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/invitations/" token)
+(defn check [route]
+  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/invitations/" (second route))
            :get
            (fn [xhrio])
            :error-handler
            (fn [_ xhrio]
-             (dispatch [:error (read-string (.getResponseText xhrio))]))
+             (dispatch [:route [:not-found]]))
            :headers {"Content-Type" "application/edn"}))

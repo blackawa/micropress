@@ -4,7 +4,7 @@
             [reagent.core :as reagent]
             [micropress.component.not-found :refer [not-found]]
             [micropress.component.admin.login :refer [login]]
-            [micropress.component.public.invitation :refer [invitation]]
+            [micropress.component.public$.invitation :refer [invitation]]
             [micropress.component.admin.articles :as articles]
             [micropress.component.admin.editors :refer [editors new-editor]]
             [micropress.component.admin.profile :refer [profile]]))
