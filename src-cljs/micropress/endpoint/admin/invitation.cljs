@@ -25,7 +25,7 @@
                        "Authorization" (str "Bearer " auth-token)})))
 
 (defn check [route]
-  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/admin/invitations/" (second route))
+  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/invitations/" (second route))
            :get
            (fn [xhrio])
            :error-handler
