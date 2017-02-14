@@ -1,6 +1,5 @@
 (ns micropress.resource.admin.editors
-  (:require [buddy.hashers :as h]
-            [liberator.core :refer [resource]]
+  (:require [liberator.core :refer [resource]]
             [micropress.repository.editor :as editor]
             [micropress.resource.base :refer [authenticated]]))
 
