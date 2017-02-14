@@ -10,6 +10,17 @@
         invitation (first (invitation/find-by-token {:token (:token params)} {:connection db}))]
     [(not (nil? invitation)) {::invitation invitation}]))
 
+(defn- processable? [ctx db]
+  (if (#{:post} (get-in ctx [:request :request-method]))
+    (let [data (:micropress.resource.base/data ctx)
+          new-username? (empty? (editor/find-active-by-username {:username (:username data)} {:connection db}))]
+      [new-username? (when (not new-username?) {::error "username conflicted"})])
+    true))
+
+(defn- handle-unprocessable-entity [ctx]
+  (let [error (::error ctx)]
+    (str {:error error})))
+
 (defn- post! [ctx db]
   (let [data (:micropress.resource.base/data ctx)
         invitation (::invitation ctx)]
@@ -26,4 +37,6 @@
    :available-media-types ["application/edn"]
    :exists? #(exists? % db)
    :can-post-to-missing? (fn [ctx] false)
+   :processable? #(processable? % db)
+   :handle-unprocessable-entity handle-unprocessable-entity
    :post! #(post! % db)))

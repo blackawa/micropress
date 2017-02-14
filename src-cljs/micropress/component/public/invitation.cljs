@@ -14,7 +14,8 @@
         (invitation/check @route)))
     :reagent-render
     (fn []
-      (let [form (subscribe [:form])
+      (let [route (subscribe [:route])
+            form (subscribe [:form])
             error (subscribe [:error])]
         [:div
          [:h3 "accept invitation"]
@@ -28,4 +29,4 @@
                                                        :placeholder "password"
                                                        :value (:password @form)
                                                        :on-change #(dispatch [:invitation/form.password (-> % .-target .-value)])}]]]
-          [:button.ui.teal.button {:type "submit" :on-click #(do (.preventDefault %))} "accept invitation"]]]))}))
+          [:button.ui.teal.button {:type "submit" :on-click #(do (.preventDefault %) (invitation/accept @route @form))} "accept invitation"]]]))}))

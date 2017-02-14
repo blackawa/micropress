@@ -3,6 +3,7 @@
             [cljs.reader :refer [read-string]]
             [re-frame.core :refer [dispatch]]
             [micropress.endpoint.api :refer [request]]
+            [micropress.endpoint.admin.authentication :as authentication]
             [micropress.util.cookie :refer [get-cookie]]
             [micropress.util.url :as url]))
 
@@ -32,3 +33,18 @@
            (fn [_ xhrio]
              (dispatch [:route [:not-found]]))
            :headers {"Content-Type" "application/edn"}))
+
+(defn accept [route form]
+  (request (str (.. js/location -procotol) "//" (.. js/location -host) "/api/invitations/" (second route))
+           :post
+           (fn [xhrio]
+             (authentication/authenticate! (str form)))
+           :error-handler
+           (fn [_ xhrio]
+             (condp = (.getStatus xhrio)
+               404 (dispatch [:route [:not-found]])
+               422 (dispatch [:error (read-string (.getResponseText xhrio))])
+               (do (js/console.error "unexpected error")
+                   (accountant/navigate! "/login"))))
+           :headers {"Content-Type" "application/edn"}
+           :body (str form)))
