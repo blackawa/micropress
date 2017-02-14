@@ -23,9 +23,9 @@
           [:p.inline.field [:label "username" [:input {:type "text"
                                                        :placeholder "username"
                                                        :value (:username @form)
-                                                       :on-change #(dispatch [:login/form.username (-> % .-target .-value)])}]]]
+                                                       :on-change #(dispatch [:invitation/form.username (-> % .-target .-value)])}]]]
           [:p.inline.field [:label "password" [:input {:type "password"
                                                        :placeholder "password"
                                                        :value (:password @form)
-                                                       :on-change #(dispatch [:login/form.password (-> % .-target .-value)])}]]]
+                                                       :on-change #(dispatch [:invitation/form.password (-> % .-target .-value)])}]]]
           [:button.ui.teal.button {:type "submit" :on-click #(do (.preventDefault %))} "accept invitation"]]]))}))

@@ -44,3 +44,6 @@
 (reg-event-db :articles/form.file      (fn [db [_ file-info]] (update-in db [:form :content] #(str % "\n\n" file-info))))
 
 (reg-event-db :profile/form.password (fn [db [_ password]] (assoc-in db [:form :password] password)))
+
+(reg-event-db :invitation/form.username (fn [db [_ username]] (assoc-in db [:form :username] username)))
+(reg-event-db :invitation/form.password (fn [db [_ password]] (assoc-in db [:form :password] password)))
