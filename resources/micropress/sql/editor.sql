@@ -6,7 +6,7 @@ values
 
 -- name: find-active-by-username
 select * from editor
-where username = :username and editor_status_id = 2
+where username = :username and editor_status_id = 1
 
 -- name: update-editor!
 update editor set
