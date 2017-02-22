@@ -9,7 +9,7 @@ Content management system with Clojure / Script.
 micropress expects some environment variables to be set.
 
 |Variable|Role|
-|:-:|:-:|
+|:--|:--|
 |`DATABASE_URL`|JDBC connection string. e.g. `jdbc:postgresql://db:5432/micropress`|
 |`USERNAME`|Database connection username|
 |`PASSWORD`|Database connection password|
