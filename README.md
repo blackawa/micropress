@@ -2,6 +2,21 @@
 
 Content management system with Clojure / Script.
 
+## Use micropress
+
+### Environment variables
+
+micropress expects some environment variables to be set.
+
+|Variable|Role|
+|:-:|:-:|
+|`DATABASE_URL`|JDBC connection string. e.g. `jdbc:postgresql://db:5432/micropress`|
+|`USERNAME`|Database connection username|
+|`PASSWORD`|Database connection password|
+|`ACCESS_CONTROL_ALLOW_ORIGIN`|[CORS(Cross Origin Resource Sharing)](https://www.w3.org/TR/cors/) configuration. You can send GET request from browser of your frontend service|
+|`AWS_ACCESS_KEY_ID`|You must set if you want to upload images to micropress. See [Managing Access Keys for your AWS Account - Amazon Web Services](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)|
+|`AWS_SECRET_ACCESS_KEY`|You must set if you want to upload images to micropress. See [Managing Access Keys for your AWS Account - Amazon Web Services](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)|
+
 ## Developing
 
 ### Prerequisite
